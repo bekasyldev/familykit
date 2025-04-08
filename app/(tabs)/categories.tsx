@@ -3,12 +3,18 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
+import { router, Stack } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 
 export default function CategoriesScreen() {
   return (
     <ThemedView style={styles.container}>
+      <Stack.Screen 
+        options={{
+          headerShown: false,
+        }} 
+      />
       <View style={styles.header}>
         <ThemedText style={styles.title}>Категории</ThemedText>
         <TouchableOpacity style={styles.menuButton}>
@@ -19,14 +25,30 @@ export default function CategoriesScreen() {
         <View style={styles.content}>
           <View style={styles.section}>
             <ThemedText style={styles.sectionTitle}>Активности</ThemedText>
+            
             <View style={styles.cardRow}>
-              <TouchableOpacity style={styles.card}>
+              <TouchableOpacity 
+                style={styles.card}
+                onPress={() => router.push('/category/indoor' as any)}
+              >
                 <ThemedText style={styles.cardText}>В помещении</ThemedText>
                 <Image source={require('../../assets/images/indoor.png')} style={styles.cardImage} />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.card}>
+              <TouchableOpacity 
+                style={styles.card}
+                onPress={() => router.push('/category/outdoor' as any)}
+              >
                 <ThemedText style={styles.cardText}>На улице</ThemedText>
                 <Image source={require('../../assets/images/outdoor.png')} style={styles.cardImage} />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.cardRow}>
+            <TouchableOpacity 
+                style={styles.card}
+                onPress={() => router.push('/category/holiday' as any)}
+              >
+                <ThemedText style={styles.cardText}>Праздничные</ThemedText>
+                <Image source={require('../../assets/images/holiday.png')} style={styles.cardImage} />
               </TouchableOpacity>
             </View>
           </View>
@@ -36,17 +58,26 @@ export default function CategoriesScreen() {
           <View style={styles.section}>
             <ThemedText style={styles.sectionTitle}>Разговоры</ThemedText>
             <View style={styles.cardRow}>
-              <TouchableOpacity style={styles.card}>
+              <TouchableOpacity 
+                style={styles.card}
+                onPress={() => router.push('/category/word-games' as any)}
+              >
                 <ThemedText style={styles.cardText}>Словесные игры</ThemedText>
                 <Image source={require('../../assets/images/word-games.png')} style={styles.cardImage} />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.card}>
+              <TouchableOpacity 
+                style={styles.card}
+                onPress={() => router.push('/category/questions' as any)}
+              >
                 <ThemedText style={styles.cardText}>Вопросы и ответы</ThemedText>
                 <Image source={require('../../assets/images/questions.png')} style={styles.cardImage} />
               </TouchableOpacity>
             </View>
             <View style={styles.cardRow}>
-              <TouchableOpacity style={styles.card}>
+              <TouchableOpacity 
+                style={styles.card}
+                onPress={() => router.push('/category/story' as any)}
+              >
                 <ThemedText style={styles.cardText}>Расскажи историю</ThemedText>
                 <Image source={require('../../assets/images/story.png')} style={styles.cardImage} />
               </TouchableOpacity>
@@ -58,11 +89,17 @@ export default function CategoriesScreen() {
           <View style={styles.section}>
             <ThemedText style={styles.sectionTitle}>Игры онлайн</ThemedText>
             <View style={styles.cardRow}>
-              <TouchableOpacity style={styles.card}>
+              <TouchableOpacity 
+                style={styles.card}
+                onPress={() => router.push('/category/charades' as any)}
+              >
                 <ThemedText style={styles.cardText}>Шарады</ThemedText>
                 <Image source={require('../../assets/images/charades.png')} style={styles.cardImage} />
               </TouchableOpacity>
-              <TouchableOpacity style={styles.card}>
+              <TouchableOpacity 
+                style={styles.card}
+                onPress={() => router.push('/category/flags' as any)}
+              >
                 <ThemedText style={styles.cardText}>Угадай флаг</ThemedText>
                 <Image source={require('../../assets/images/flags.png')} style={styles.cardImage} />
               </TouchableOpacity>
