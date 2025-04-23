@@ -26,7 +26,6 @@ export default function OutdoorScreen() {
         <View style={styles.content}>
           <ThemedText style={styles.sectionTitle}>Популярные активности</ThemedText>
           
-          {/* Activity cards will go here */}
           
         </View>
       </ScrollView>

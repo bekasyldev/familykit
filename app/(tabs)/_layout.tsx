@@ -54,6 +54,48 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <MaterialIcons name="person" size={24} color={color} />,
         }}
       />
+      <Tabs.Screen
+        name="charades"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="flags"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="indoor"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="outdoor"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="word-games"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="questions"  
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="story"
+        options={{
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }

@@ -37,57 +37,65 @@ export default function CharadesScreen() {
         <ThemedText style={styles.sectionTitle}>Игрушки</ThemedText>
         <View style={styles.cardRow}>
           <TouchableOpacity style={styles.card}>
+          <ThemedText style={styles.cardText}>Игры</ThemedText>
             <Image source={require('@/assets/images/ball.png')} style={styles.cardImage} />
-            <ThemedText style={styles.cardText}>Игры</ThemedText>
           </TouchableOpacity>
           <TouchableOpacity style={styles.card}>
-            <Image source={require('@/assets/images/toy.png')} style={styles.cardImage} />
             <ThemedText style={styles.cardText}>Игрушки</ThemedText>
+            <Image source={require('@/assets/images/toy.png')} style={styles.cardImage} />
           </TouchableOpacity>
         </View>
 
         <ThemedText style={styles.sectionTitle}>Природа</ThemedText>
         <View style={styles.cardWrap}>
           <TouchableOpacity style={styles.card}>
+          <ThemedText style={styles.cardText}>Животное</ThemedText>
+
             <Image source={require('@/assets/images/animals.png')} style={styles.cardImage} />
-            <ThemedText style={styles.cardText}>Животное</ThemedText>
           </TouchableOpacity>
           <TouchableOpacity style={styles.card}>
+          <ThemedText style={styles.cardText}>Птицы</ThemedText>
+
             <Image source={require('@/assets/images/birds.png')} style={styles.cardImage} />
-            <ThemedText style={styles.cardText}>Птицы</ThemedText>
           </TouchableOpacity>
           <TouchableOpacity style={styles.card}>
+          <ThemedText style={styles.cardText}>Рыбы</ThemedText>
+
             <Image source={require('@/assets/images/fishes.png')} style={styles.cardImage} />
-            <ThemedText style={styles.cardText}>Рыбы</ThemedText>
           </TouchableOpacity>
           <TouchableOpacity style={styles.card}>
+          <ThemedText style={styles.cardText}>Природа</ThemedText>
+
             <Image source={require('@/assets/images/nature.png')} style={styles.cardImage} />
-            <ThemedText style={styles.cardText}>Природа</ThemedText>
           </TouchableOpacity>
         </View>
 
         <ThemedText style={styles.sectionTitle}>Люди</ThemedText>
         <View style={styles.cardRow}>
           <TouchableOpacity style={styles.card}>
+          <ThemedText style={styles.cardText}>Профессии</ThemedText>
+
             <Image source={require('@/assets/images/profesions.png')} style={styles.cardImage} />
-            <ThemedText style={styles.cardText}>Профессии</ThemedText>
           </TouchableOpacity>
           <TouchableOpacity style={styles.card}>
+          <ThemedText style={styles.cardText}>Персонажи</ThemedText>
+
             <Image source={require('@/assets/images/characters.png')} style={styles.cardImage} />
-            <ThemedText style={styles.cardText}>Персонажи</ThemedText>
           </TouchableOpacity>
         </View>
 
         <ThemedText style={styles.sectionTitle}>Окружающие предметы</ThemedText>
           <View style={styles.cardWrap}>
             <TouchableOpacity style={styles.card}>
+            <ThemedText style={styles.cardText}>Дом</ThemedText>
+
               <Image source={require('@/assets/images/house.png')} style={styles.cardImage} />
-              <ThemedText style={styles.cardText}>Дом</ThemedText>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.card}>
+            <ThemedText style={styles.cardText}>Машины</ThemedText>
+
               <Image source={require('@/assets/images/car.png')} style={styles.cardImage} />
-              <ThemedText style={styles.cardText}>Машины</ThemedText>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.fullWidthRowCard}>
@@ -122,14 +130,14 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600',
     fontFamily: 'Manrope',
-    color: Colors.primary.blue,
+    color: Colors.primary.darkBlue,
   },
   scrollContent: {
     paddingHorizontal: 40,
     paddingBottom: 100,
   },
   instructionsBox: {
-    backgroundColor: Colors.primary.blue,
+    backgroundColor: Colors.primary.darkBlue,
     borderRadius: 24,
     padding: 20,
     marginBottom: 32,
@@ -165,14 +173,16 @@ const styles = StyleSheet.create({
     borderColor: Colors.grayscale.lightGray1,
     borderRadius: 17,
     padding: 12,
-    alignItems: 'center',
+    alignItems: 'flex-start',
     backgroundColor: Colors.grayscale.white,
   },
   cardText: {
     fontSize: 16,
+    marginLeft: 8,
+    marginBottom: 8,
     fontWeight: '500',
     fontFamily: 'Manrope',
-    color: Colors.primary.blue,
+    color: Colors.primary.darkBlue,
   },
   cardImage: {
     width: 100, // increased

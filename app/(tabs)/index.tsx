@@ -1,32 +1,129 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, ScrollView, TouchableOpacity, Modal, Dimensions } from 'react-native';
+import { Image } from 'expo-image';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { ActivityCard } from '@/components/cards/ActivityCard';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 
+const { width } = Dimensions.get('window');
+
 export default function HomeScreen() {
   const [activeTab, setActiveTab] = useState<'recommended' | 'new'>('recommended');
   const [isGridView, setIsGridView] = useState(true);
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
   
+  const toggleFilterModal = () => {
+    setFilterModalVisible(!filterModalVisible);
+  };
 
   return (
     <ThemedView style={styles.container}>
-      <View style={styles.header}>
-        <View style={styles.headerContent}>
-          <ThemedText style={styles.logo}>Family<ThemedText style={styles.subLogo}>Kite</ThemedText></ThemedText>
-          <TouchableOpacity style={styles.menuButton}>
-            <Ionicons name="options-outline" size={24} color={Colors.grayscale.white} />
-          </TouchableOpacity>
-        </View>
-      </View>
+      {!filterModalVisible ? (
+        <View>
+          <View style={styles.header}>
+            <View style={styles.headerContent}>
+              <ThemedText style={styles.logo}>Family<ThemedText style={styles.subLogo}>Kite</ThemedText></ThemedText>
+              <TouchableOpacity style={styles.menuButton} onPress={toggleFilterModal}>
+                <Ionicons name="options-outline" size={24} color={Colors.grayscale.white} />
+              </TouchableOpacity>
+            </View>
+          </View>
 
-      <View style={styles.titleContainer}>
-        <ThemedText style={styles.title}>
-          Только 15 минут в день - большие перемены завтра
-        </ThemedText>
-      </View>
+          <View style={styles.titleContainer}>
+            <ThemedText style={styles.title}>
+              Только 15 минут в день - большие перемены завтра
+            </ThemedText>
+          </View>
+        </View>
+      ) : (
+        <View style={styles.modalHeaderContainer}>
+          <View style={styles.header}>
+            <View style={styles.headerContent}>
+              <ThemedText style={styles.logo}>Family<ThemedText style={styles.subLogo}>Kite</ThemedText></ThemedText>
+              <TouchableOpacity style={styles.menuButton} onPress={toggleFilterModal}>
+                <Ionicons name="heart-outline" size={24} color={Colors.grayscale.white} />
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={styles.titleContainerFaded}>
+            <ThemedText style={styles.titleFaded}>
+              Только 15 минут в день - большие перемены завтра
+            </ThemedText>
+          </View>
+        </View>
+      )}
+      
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={filterModalVisible}
+        onRequestClose={toggleFilterModal}
+      >
+        <View style={styles.modalOverlay}>
+          <View style={styles.filterModal}>
+            <View style={styles.filterHeader}>
+              <ThemedText style={styles.filterTitle}>Фильтры</ThemedText>
+              <TouchableOpacity onPress={toggleFilterModal} style={styles.closeButton}>
+                <Image 
+                  source={require('../../assets/images/close-blue.svg')} 
+                  style={styles.closeIcon}
+                />
+              </TouchableOpacity>
+            </View>
+            
+            <TouchableOpacity style={styles.filterOption}>
+              <ThemedText style={styles.filterOptionText}>Возраст ребенка</ThemedText>
+              <Image 
+                source={require('../../assets/images/menu-outline.svg')}
+                style={styles.arrowBottom}
+                />
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.filterOption}>
+              <ThemedText style={styles.filterOptionText}>Место</ThemedText>
+              <Image 
+                source={require('../../assets/images/menu-outline.svg')}
+                style={styles.arrowBottom} 
+                />
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.filterOption}>
+              <ThemedText style={styles.filterOptionText}>Цель</ThemedText>
+              <Image 
+                source={require('../../assets/images/menu-outline.svg')}
+                style={styles.arrowBottom}
+                />
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.filterOption}>
+              <ThemedText style={styles.filterOptionText}>Время</ThemedText>
+              <Image 
+                source={require('../../assets/images/menu-outline.svg')}
+                style={styles.arrowBottom}
+                />
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.filterOption}>
+              <ThemedText style={styles.filterOptionText}>Уровень энергии</ThemedText>
+              <Image 
+                source={require('../../assets/images/menu-outline.svg')}
+                style={styles.arrowBottom}
+                />
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.applyButton}>
+              <ThemedText style={styles.applyButtonText}>Применить</ThemedText>
+            </TouchableOpacity>
+            
+            <TouchableOpacity style={styles.resetButton}>
+              <ThemedText style={styles.resetButtonText}>Сбросить</ThemedText>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       
       <View style={styles.mainContent}>
         <View style={styles.tabSection}>
@@ -144,7 +241,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   menuButton: {
-    padding: 8,
+    paddingBottom: 10,
   },
   titleContainer: {
     paddingHorizontal: 20,
@@ -179,7 +276,8 @@ const styles = StyleSheet.create({
   tab: {
     paddingHorizontal: 16,
     paddingVertical: 8,
-    borderRadius: 100,
+    borderRadius: 10,
+    backgroundColor: '#F4F3F3'
   },
   activeTab: {
     backgroundColor: Colors.accent.lightOrange,
@@ -223,5 +321,98 @@ const styles = StyleSheet.create({
   listContainer: {
     flexDirection: 'column',
     alignItems: 'center',
+  },
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.4)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  filterModal: {
+    width: '88%',
+    backgroundColor: Colors.grayscale.white,
+    borderRadius: 24,
+    paddingHorizontal: 40,
+    paddingTop: 30,
+    paddingBottom: 30,
+    marginTop: 80, 
+  },
+  filterHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 30,
+  },
+  filterTitle: {
+    fontSize: 25,
+    fontWeight: '500',
+    fontFamily: 'Manrope-Medium',
+    marginTop: 20
+  },
+  closeButton: {
+    marginBottom: 20,
+  },
+  closeIcon: {
+    width: 20,
+    height: 20,
+  },
+  filterOption: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingVertical: 15,
+    paddingHorizontal: 17,
+    backgroundColor: '#F5F5F5',
+    borderRadius: 15,
+    marginBottom: 12,
+  },
+  filterOptionText: {
+    fontSize: 16,
+    opacity: 0.5,
+    fontFamily: 'Manrope',
+  },
+  arrowBottom: {
+    width: 16,
+    height: 7.5,
+  },
+  applyButton: {
+    backgroundColor: Colors.primary.blue,
+    borderRadius: 16,
+    paddingVertical: 16,
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 12,
+  },
+  applyButtonText: {
+    color: Colors.grayscale.white,
+    fontSize: 16,
+    fontFamily: 'Manrope-SemiBold',
+    fontWeight: '600',
+  },
+  resetButton: {
+    backgroundColor: '#F5F5F5',
+    borderRadius: 16,
+    paddingVertical: 16,
+    alignItems: 'center',
+  },
+  resetButtonText: {
+    color: Colors.primary.blue,
+    fontSize: 16,
+    fontFamily: 'Manrope-SemiBold',
+  },
+  modalHeaderContainer: {
+    backgroundColor: Colors.primary.blue,
+  },
+  titleContainerFaded: {
+    paddingHorizontal: 20,
+    marginBottom: 31,
+    opacity: 0.5,
+  },
+  titleFaded: {
+    fontSize: 25,
+    lineHeight: 35,
+    color: Colors.grayscale.white,
+    fontFamily: 'Manrope',
+    fontWeight: '500',
   },
 });

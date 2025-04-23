@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   title: {
-    fontSize: 24,
+    fontSize: 25,
     color: Colors.grayscale.white,
     fontFamily: 'Manrope',
     fontWeight: '600',
@@ -99,12 +99,12 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     resizeMode: 'contain',
-    marginBottom: 10,
   },
   cardText: {
     fontSize: 16,
     fontWeight: '500',
-    color: Colors.primary.blue,
+    marginTop: 16,
+    color: Colors.primary.darkBlue,
     fontFamily: 'Manrope',
     textAlign: 'center',
   },

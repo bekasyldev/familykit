@@ -47,10 +47,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   title: {
-    fontSize: 32,
+    fontSize: 24,
     color: Colors.grayscale.white,
-    fontFamily: 'Poppins-Bold',
-    fontWeight: '700',
+    fontFamily: 'Manrope',
+    fontWeight: '600',
     paddingVertical: 10
   },
   filterButton: {

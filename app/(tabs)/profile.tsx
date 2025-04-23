@@ -5,6 +5,7 @@ import { Colors } from '@/constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
 
 export default function ProfileScreen() {
+
   return (
     <ThemedView style={styles.container}>
       <View style={styles.header}>
@@ -41,8 +42,11 @@ export default function ProfileScreen() {
           <MaterialIcons name="headset" size={24} color={Colors.primary.blue} />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.setting}>
+        <TouchableOpacity 
+          style={styles.setting}
+        >
           <ThemedText style={styles.settingText}>Оставить отзыв</ThemedText>
+          <MaterialIcons name="arrow-forward-ios" size={20} color={Colors.primary.blue} />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.logoutButton}>
@@ -66,7 +70,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   title: {
-    fontSize: 32,
+    fontSize: 24,
     color: Colors.grayscale.white,
     fontFamily: 'Manrope',
     fontWeight: '600',

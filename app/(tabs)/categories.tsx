@@ -29,14 +29,14 @@ export default function CategoriesScreen() {
             <View style={styles.cardRow}>
               <TouchableOpacity 
                 style={styles.card}
-                onPress={() => router.push('/category/indoor' as any)}
+                onPress={() => router.push('/indoor' as any)}
               >
                 <ThemedText style={styles.cardText}>В помещении</ThemedText>
                 <Image source={require('../../assets/images/indoor.png')} style={styles.cardImage} />
               </TouchableOpacity>
               <TouchableOpacity 
                 style={styles.card}
-                onPress={() => router.push('/category/outdoor' as any)}
+                onPress={() => router.push('/outdoor' as any)}
               >
                 <ThemedText style={styles.cardText}>На улице</ThemedText>
                 <Image source={require('../../assets/images/outdoor.png')} style={styles.cardImage} />
@@ -45,7 +45,7 @@ export default function CategoriesScreen() {
             <View style={styles.cardRow}>
             <TouchableOpacity 
                 style={styles.card}
-                onPress={() => router.push('/category/holiday' as any)}
+                onPress={() => router.push('/holiday' as any)}
               >
                 <ThemedText style={styles.cardText}>Праздничные</ThemedText>
                 <Image source={require('../../assets/images/holiday.png')} style={styles.cardImage} />
@@ -60,14 +60,14 @@ export default function CategoriesScreen() {
             <View style={styles.cardRow}>
               <TouchableOpacity 
                 style={styles.card}
-                onPress={() => router.push('/category/word-games' as any)}
+                onPress={() => router.push('/word-games' as any)}
               >
                 <ThemedText style={styles.cardText}>Словесные игры</ThemedText>
                 <Image source={require('../../assets/images/word-games.png')} style={styles.cardImage} />
               </TouchableOpacity>
               <TouchableOpacity 
                 style={styles.card}
-                onPress={() => router.push('/category/questions' as any)}
+                onPress={() => router.push('/questions' as any)}
               >
                 <ThemedText style={styles.cardText}>Вопросы и ответы</ThemedText>
                 <Image source={require('../../assets/images/questions.png')} style={styles.cardImage} />
@@ -76,7 +76,7 @@ export default function CategoriesScreen() {
             <View style={styles.cardRow}>
               <TouchableOpacity 
                 style={styles.card}
-                onPress={() => router.push('/category/story' as any)}
+                onPress={() => router.push('/story' as any)}
               >
                 <ThemedText style={styles.cardText}>Расскажи историю</ThemedText>
                 <Image source={require('../../assets/images/story.png')} style={styles.cardImage} />
@@ -91,14 +91,14 @@ export default function CategoriesScreen() {
             <View style={styles.cardRow}>
               <TouchableOpacity 
                 style={styles.card}
-                onPress={() => router.push('/category/charades' as any)}
+                onPress={() => router.push('/charades' as any)}
               >
                 <ThemedText style={styles.cardText}>Шарады</ThemedText>
                 <Image source={require('../../assets/images/charades.png')} style={styles.cardImage} />
               </TouchableOpacity>
               <TouchableOpacity 
                 style={styles.card}
-                onPress={() => router.push('/category/flags' as any)}
+                onPress={() => router.push('/flags' as any)}
               >
                 <ThemedText style={styles.cardText}>Угадай флаг</ThemedText>
                 <Image source={require('../../assets/images/flags.png')} style={styles.cardImage} />
@@ -126,10 +126,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   title: {
-    fontSize: 32,
+    fontSize: 24,
     color: Colors.grayscale.white,
-    fontFamily: 'Poppins-Bold',
-    fontWeight: '700',
+    fontFamily: 'Manrope',
+    fontWeight: '600',
     paddingVertical: 10
   },
   menuButton: {
