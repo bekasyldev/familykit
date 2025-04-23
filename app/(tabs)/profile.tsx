@@ -3,8 +3,14 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 export default function ProfileScreen() {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    router.push('/(auth)/signup');
+  }
 
   return (
     <ThemedView style={styles.container}>
@@ -50,7 +56,7 @@ export default function ProfileScreen() {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.logoutButton}>
-          <ThemedText style={styles.logoutText}>
+          <ThemedText style={styles.logoutText} onPress={handleLogout}>
             Выйти с аккаунта
           </ThemedText>
         </TouchableOpacity>

@@ -6,7 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 // Grid view dimensions
-const GRID_CARD_WIDTH = (width - 56) / 2; // Two cards with margins
+const GRID_CARD_WIDTH = (width - 56) / 1.9; // Two cards with margins
 const GRID_CARD_HEIGHT = GRID_CARD_WIDTH;
 // List view dimensions (from design)
 const LIST_CARD_WIDTH = width - 24;
@@ -60,7 +60,7 @@ export function ActivityCard({
           <Ionicons 
             name="time-outline" 
             size={isGridView ? 12 : 14} 
-            color={Colors.primary.blue} 
+            color={Colors.primary.darkBlue} 
             style={styles.timeIcon} 
           />
         </View>
@@ -71,7 +71,7 @@ export function ActivityCard({
           >
             <Ionicons 
               name="heart-outline" 
-              size={20} 
+              size={18} 
               color={Colors.accent.orange}
             />
           </TouchableOpacity>
@@ -140,6 +140,9 @@ const styles = StyleSheet.create({
   imageContainer: {
     position: 'relative',
     width: '100%',
+    overflow: 'hidden',
+    alignItems: 'center', // Center the image horizontally
+    justifyContent: 'center', // Center the image vertically
   },
   gridImageContainer: {
     height: GRID_CARD_WIDTH * 0.75, // Reduce image height to make room for title
@@ -148,9 +151,12 @@ const styles = StyleSheet.create({
     height: LIST_IMAGE_HEIGHT,
   },
   image: {
-    width: '100%',
+    width: '90%',
     height: '100%',
     borderRadius: 15,
+    position: 'absolute',
+    top: 0,
+    // Remove left: 0 to allow centering
   },
   timeContainer: {
     position: 'absolute',
@@ -162,14 +168,14 @@ const styles = StyleSheet.create({
   },
   gridTimeContainer: {
     bottom: 8,
-    left: 8,
+    left: 16,
     paddingVertical: 4,
     paddingHorizontal: 8,
     borderRadius: 8,
   },
   listTimeContainer: {
     top: 24,
-    right: 16,
+    right: 28,
     paddingVertical: 7,
     paddingHorizontal: 12,
     gap: 6,
@@ -178,7 +184,7 @@ const styles = StyleSheet.create({
   timeText: {
     fontFamily: 'Manrope',
     fontWeight: '500',
-    color: Colors.primary.blue,
+    color: Colors.primary.darkBlue,
     opacity: 0.8,
   },
   gridTimeText: {
@@ -193,13 +199,13 @@ const styles = StyleSheet.create({
   },
   likeButton: {
     position: 'absolute',
-    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 16,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderRadius: 7,
     padding: 6,
   },
   gridLikeButton: {
     top: 8,
-    right: 8,
+    right: 24,
   },
   listLikeButton: {
     padding: 0,
@@ -223,7 +229,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'Manrope',
     fontWeight: '600',
-    color: Colors.primary.blue,
+    color: Colors.primary.darkBlue,
   },
   gridTitle: {
     fontSize: 14,
@@ -241,4 +247,4 @@ const styles = StyleSheet.create({
     color: Colors.grayscale.black,
     opacity: 0.4,
   },
-}); 
+});
