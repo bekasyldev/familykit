@@ -5,8 +5,9 @@
 
 export const Colors = {
   primary: {
-    blue: '#033B5A',
+    blue: '#095981',
     lightBlue: '#106FA3',
+    darkBlue: '#033B5A',
   },
   accent: {
     orange: '#C16F28',
