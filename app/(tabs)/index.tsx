@@ -6,8 +6,8 @@ import { ThemedText } from '@/components/ThemedText';
 import { ActivityCard } from '@/components/cards/ActivityCard';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
+import { FilterModal } from '@/components/modals/FilterModal';
 
-const { width } = Dimensions.get('window');
 
 export default function HomeScreen() {
   const [activeTab, setActiveTab] = useState<'recommended' | 'new'>('recommended');
@@ -20,110 +20,25 @@ export default function HomeScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      {!filterModalVisible ? (
-        <View>
-          <View style={styles.header}>
-            <View style={styles.headerContent}>
-              <ThemedText style={styles.logo}>Family<ThemedText style={styles.subLogo}>Kite</ThemedText></ThemedText>
-              <TouchableOpacity style={styles.menuButton} onPress={toggleFilterModal}>
-                <Ionicons name="options-outline" size={24} color={Colors.grayscale.white} />
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          <View style={styles.titleContainer}>
-            <ThemedText style={styles.title}>
-              Только 15 минут в день - большие перемены завтра
-            </ThemedText>
-          </View>
+      <View style={styles.header}>
+        <View style={styles.headerContent}>
+          <ThemedText style={styles.logo}>Family<ThemedText style={styles.subLogo}>Kite</ThemedText></ThemedText>
+          <TouchableOpacity style={styles.menuButton} onPress={toggleFilterModal}>
+            <Ionicons name="options-outline" size={24} color={Colors.grayscale.white} />
+          </TouchableOpacity>
         </View>
-      ) : (
-        <View style={styles.modalHeaderContainer}>
-          <View style={styles.header}>
-            <View style={styles.headerContent}>
-              <ThemedText style={styles.logo}>Family<ThemedText style={styles.subLogo}>Kite</ThemedText></ThemedText>
-              <TouchableOpacity style={styles.menuButton} onPress={toggleFilterModal}>
-                <Ionicons name="heart-outline" size={24} color={Colors.grayscale.white} />
-              </TouchableOpacity>
-            </View>
-          </View>
+      </View>
 
-          <View style={styles.titleContainerFaded}>
-            <ThemedText style={styles.titleFaded}>
-              Только 15 минут в день - большие перемены завтра
-            </ThemedText>
-          </View>
-        </View>
-      )}
+      <View style={[styles.titleContainer, filterModalVisible && styles.titleContainerFaded]}>
+        <ThemedText style={styles.title}>
+          Только 15 минут в день - большие перемены завтра
+        </ThemedText>
+      </View>
       
-      <Modal
-        animationType="slide"
-        transparent={true}
+      <FilterModal 
         visible={filterModalVisible}
-        onRequestClose={toggleFilterModal}
-      >
-        <View style={styles.modalOverlay}>
-          <View style={styles.filterModal}>
-            <View style={styles.filterHeader}>
-              <ThemedText style={styles.filterTitle}>Фильтры</ThemedText>
-              <TouchableOpacity onPress={toggleFilterModal} style={styles.closeButton}>
-                <Image 
-                  source={require('../../assets/images/close-blue.svg')} 
-                  style={styles.closeIcon}
-                />
-              </TouchableOpacity>
-            </View>
-            
-            <TouchableOpacity style={styles.filterOption}>
-              <ThemedText style={styles.filterOptionText}>Возраст ребенка</ThemedText>
-              <Image 
-                source={require('../../assets/images/menu-outline.svg')}
-                style={styles.arrowBottom}
-                />
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.filterOption}>
-              <ThemedText style={styles.filterOptionText}>Место</ThemedText>
-              <Image 
-                source={require('../../assets/images/menu-outline.svg')}
-                style={styles.arrowBottom} 
-                />
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.filterOption}>
-              <ThemedText style={styles.filterOptionText}>Цель</ThemedText>
-              <Image 
-                source={require('../../assets/images/menu-outline.svg')}
-                style={styles.arrowBottom}
-                />
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.filterOption}>
-              <ThemedText style={styles.filterOptionText}>Время</ThemedText>
-              <Image 
-                source={require('../../assets/images/menu-outline.svg')}
-                style={styles.arrowBottom}
-                />
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.filterOption}>
-              <ThemedText style={styles.filterOptionText}>Уровень энергии</ThemedText>
-              <Image 
-                source={require('../../assets/images/menu-outline.svg')}
-                style={styles.arrowBottom}
-                />
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.applyButton}>
-              <ThemedText style={styles.applyButtonText}>Применить</ThemedText>
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.resetButton}>
-              <ThemedText style={styles.resetButtonText}>Сбросить</ThemedText>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
+        onClose={toggleFilterModal}
+      />
       
       <View style={styles.mainContent}>
         <View style={styles.tabSection}>

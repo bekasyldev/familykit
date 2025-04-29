@@ -1,13 +1,21 @@
+import React, { useState } from 'react';
 import { StyleSheet, View, Text, ScrollView, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { router, Stack } from 'expo-router';
+import { FilterModal } from '@/components/modals/FilterModal';
 
 const { width } = Dimensions.get('window');
 
 export default function CategoriesScreen() {
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
+  
+  const toggleFilterModal = () => {
+    setFilterModalVisible(!filterModalVisible);
+  };
+
   return (
     <ThemedView style={styles.container}>
       <Stack.Screen 
@@ -17,10 +25,16 @@ export default function CategoriesScreen() {
       />
       <View style={styles.header}>
         <ThemedText style={styles.title}>Категории</ThemedText>
-        <TouchableOpacity style={styles.menuButton}>
+        <TouchableOpacity style={styles.menuButton} onPress={toggleFilterModal}>
           <Ionicons name="options-outline" size={24} color={Colors.grayscale.white} />
         </TouchableOpacity>
       </View>
+      
+      <FilterModal 
+        visible={filterModalVisible}
+        onClose={toggleFilterModal}
+      />
+      
       <ScrollView style={styles.scrollView}>
         <View style={styles.content}>
           <View style={styles.section}>

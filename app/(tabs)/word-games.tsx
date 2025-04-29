@@ -6,12 +6,18 @@ import { ThemedText } from '@/components/ThemedText';
 import { ActivityCard } from '@/components/cards/ActivityCard';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
+import { FilterModal } from '@/components/modals/FilterModal';
 
 const { width } = Dimensions.get('window');
 
 export default function CategoryDetailScreen() {
   const { id } = useLocalSearchParams();
   const [isGridView, setIsGridView] = useState(true);
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
+  
+  const toggleFilterModal = () => {
+    setFilterModalVisible(!filterModalVisible);
+  };
 
   return (
     <ThemedView style={styles.container}>
@@ -23,11 +29,16 @@ export default function CategoryDetailScreen() {
       <View style={styles.header}>
         <View style={styles.headerContent}>
           <ThemedText style={styles.title}>Словесные игры</ThemedText>
-          <TouchableOpacity style={styles.menuButton}>
+          <TouchableOpacity style={styles.menuButton} onPress={toggleFilterModal}>
             <Ionicons name="options-outline" size={24} color={Colors.grayscale.white} />
           </TouchableOpacity>
         </View>
       </View>
+      
+      <FilterModal 
+        visible={filterModalVisible}
+        onClose={toggleFilterModal}
+      />
       
       <View style={styles.mainContent}>
         <View style={styles.viewToggle}>
@@ -151,4 +162,4 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
   },
-}); 
+});

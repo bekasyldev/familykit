@@ -70,16 +70,17 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: '600',
     fontFamily: 'Manrope',
-    color: Colors.primary.blue,
+    color: Colors.primary.darkBlue,
   },
   scrollContent: {
-    paddingHorizontal: 40,
+    paddingHorizontal: 20,
     paddingBottom: 100,
   },
   instructionsBox: {
-    backgroundColor: Colors.primary.blue,
+    backgroundColor: Colors.primary.darkBlue,
     borderRadius: 24,
-    padding: 20,
+    padding: 30,
+    marginHorizontal: 20,
     marginBottom: 32,
   },
   instructionsTitle: {
@@ -93,6 +94,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     color: Colors.grayscale.white,
     fontFamily: 'Manrope',
+    marginLeft: 10,
     marginBottom: 8,
   },
   sectionTitle: {

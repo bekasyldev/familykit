@@ -1,18 +1,32 @@
+import React, { useState } from 'react';
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
+import { FilterModal } from '@/components/modals/FilterModal';
 
 export default function FavoritesScreen() {
+  const [filterModalVisible, setFilterModalVisible] = useState(false);
+  
+  const toggleFilterModal = () => {
+    setFilterModalVisible(!filterModalVisible);
+  };
+
   return (
     <ThemedView style={styles.container}>
       <View style={styles.header}>
         <ThemedText style={styles.title}>Избранное</ThemedText>
-        <TouchableOpacity style={styles.filterButton}>
+        <TouchableOpacity style={styles.filterButton} onPress={toggleFilterModal}>
           <Ionicons name="options-outline" size={24} color={Colors.grayscale.white} />
         </TouchableOpacity>
       </View>
+      
+      <FilterModal 
+        visible={filterModalVisible}
+        onClose={toggleFilterModal}
+      />
+      
       <View style={styles.content}>
         <Image 
           source={require('../../assets/images/favorites-empty.png')} 

@@ -1,8 +1,6 @@
 import React from 'react';
-import { StyleSheet, TouchableOpacity, Image, View, Dimensions } from 'react-native';
-import { ThemedText } from '../ThemedText';
+import { StyleSheet, TouchableOpacity, Image, View, Dimensions, Text } from 'react-native';
 import { Colors } from '@/constants/Colors';
-import { Ionicons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
@@ -22,6 +20,7 @@ interface ActivityCardProps {
 export function FlagCard({ 
   onPress,
   onLike,
+  duration = 15,
 }: ActivityCardProps) {
   return (
     <TouchableOpacity 
@@ -40,6 +39,25 @@ export function FlagCard({
           style={styles.image}
           resizeMode="cover"
         />
+        
+        {/* Time indicator */}
+        <View style={styles.timeContainer}>
+          <Text style={styles.timeText}>{duration} мин</Text>
+          <Image 
+            source={require('@/assets/images/clock-icon.png')} 
+            style={styles.timeIcon}
+            resizeMode="contain"
+          />
+        </View>
+        
+        {/* Play button */}
+        <View style={styles.playButtonContainer}>
+          <Image 
+            source={require('@/assets/images/icon-park-solid_play.png')} 
+            style={styles.playButton}
+            resizeMode="contain"
+          />
+        </View>
       </View>
       {/* Optional: Add title/description here if needed */}
     </TouchableOpacity>
@@ -54,11 +72,11 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   gridCard: {
-    width: GRID_CARD_WIDTH,
+    width: GRID_CARD_WIDTH * 1.1,
     height: GRID_CARD_HEIGHT, // 🆕 taller
   },
   listCard: {
-    width: LIST_CARD_WIDTH,
+    width: LIST_CARD_WIDTH * 1.25,
     height: LIST_CARD_HEIGHT, // 🆕 taller
   },
   imageContainer: {
@@ -66,7 +84,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   gridImageContainer: {
-    height: GRID_CARD_WIDTH * 0.85, // 🆕 was 0.75
+    height: GRID_CARD_WIDTH * 1.25, // 🆕 was 0.75
   },
   listImageContainer: {
     height: LIST_IMAGE_HEIGHT, // 🆕 taller image
@@ -78,11 +96,39 @@ const styles = StyleSheet.create({
   },
   timeContainer: {
     position: 'absolute',
+    top: 10,
+    right: 10,
+    backgroundColor: 'rgba(247, 247, 247, 0.8)',
+    backdropFilter: 'blur(6px)',
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 12,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(247, 247, 247, 0.8)',
-    backdropFilter: 'blur(6px)',
+    gap: 4,
+  },
+  timeText: {
+    fontFamily: 'Manrope',
+    fontSize: 12,
+    fontWeight: '500',
+    color: Colors.accent.orange,
+    opacity: 0.8,
+  },
+  playButtonContainer: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: [{ translateX: -25 }, { translateY: -25 }],
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  playButton: {
+    width: 30,
+    height: 30,
   },
   gridTimeContainer: {
     bottom: 8,
@@ -99,12 +145,6 @@ const styles = StyleSheet.create({
     gap: 6,
     borderRadius: 11,
   },
-  timeText: {
-    fontFamily: 'Manrope',
-    fontWeight: '500',
-    color: Colors.primary.blue,
-    opacity: 0.8,
-  },
   gridTimeText: {
     fontSize: 12,
     marginRight: 4,
@@ -113,6 +153,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   timeIcon: {
+    width: 12,
+    height: 12,
     opacity: 0.7,
   },
   likeButton: {
