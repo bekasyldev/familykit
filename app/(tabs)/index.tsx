@@ -7,6 +7,7 @@ import { ActivityCard } from '@/components/cards/ActivityCard';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { FilterModal } from '@/components/modals/FilterModal';
+import { router } from 'expo-router';
 
 
 export default function HomeScreen() {
@@ -106,7 +107,7 @@ export default function HomeScreen() {
               title="Конструкторы лего"
               duration={20}
               imageUrl="your_image_url"
-              onPress={() => {}}
+              onPress={() => {}}  // This will be handled inside ActivityCard now
               onLike={() => {}}
               description="Собирание LEGO с детьми — это увлекательное и полезное занятие, которое развивает воображение, мелкую моторику и логическое мышление."
               isGridView={isGridView}
@@ -115,7 +116,7 @@ export default function HomeScreen() {
               title="Конструкторы лего"
               duration={20}
               imageUrl="your_image_url"
-              onPress={() => {}}
+              onPress={() => {}}  // This will be handled inside ActivityCard now
               onLike={() => {}}
               description="Собирание LEGO с детьми — это увлекательное и полезное занятие, которое развивает воображение, мелкую моторику и логическое мышление."
               isGridView={isGridView}

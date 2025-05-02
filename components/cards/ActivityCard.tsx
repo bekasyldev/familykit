@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, Image, View, Dimensions } from 'react-nat
 import { ThemedText } from '../ThemedText';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 const { width } = Dimensions.get('window');
 // Grid view dimensions
@@ -26,19 +27,33 @@ interface ActivityCardProps {
 export function ActivityCard({ 
   title, 
   duration, 
-  imageUrl, 
+  imageUrl,
   onPress,
   onLike,
   description,
   isGridView = true
 }: ActivityCardProps) {
+  
+  // Navigate to product page with activity data
+  const handlePress = () => {
+    router.push({
+      pathname: '/product',
+      params: {
+        title,
+        description,
+        duration: duration.toString(),
+        imageUrl
+      }
+    });
+  };
+  
   return (
     <TouchableOpacity 
       style={[
         styles.card,
         isGridView ? styles.gridCard : styles.listCard
       ]} 
-      onPress={onPress}
+      onPress={handlePress}
     >
       <View style={[
         styles.imageContainer,
@@ -131,24 +146,24 @@ const styles = StyleSheet.create({
   },
   gridCard: {
     width: GRID_CARD_WIDTH,
-    height: GRID_CARD_HEIGHT,
+    height: GRID_CARD_HEIGHT * 1.25,
   },
   listCard: {
     width: LIST_CARD_WIDTH,
-    height: LIST_CARD_HEIGHT,
+    height: LIST_CARD_HEIGHT, 
   },
   imageContainer: {
     position: 'relative',
     width: '100%',
     overflow: 'hidden',
-    alignItems: 'center', // Center the image horizontally
-    justifyContent: 'center', // Center the image vertically
+    alignItems: 'center', 
+    justifyContent: 'center', 
   },
   gridImageContainer: {
-    height: GRID_CARD_WIDTH * 0.75, // Reduce image height to make room for title
+    height: GRID_CARD_WIDTH ,
   },
   listImageContainer: {
-    height: LIST_IMAGE_HEIGHT,
+    height: LIST_IMAGE_HEIGHT * 1.25,
   },
   image: {
     width: '90%',
@@ -229,6 +244,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'Manrope',
     fontWeight: '600',
+    marginLeft: 10,
     color: Colors.primary.darkBlue,
   },
   gridTitle: {
@@ -243,6 +259,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 16,
     fontFamily: 'Inter',
+    marginLeft: 10,
     lineHeight: 19,
     color: Colors.grayscale.black,
     opacity: 0.4,
