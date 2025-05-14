@@ -4,7 +4,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { scale, verticalScale, fontScale, moderateScale, listenOrientationChange } from '@/constants/Layout';
 
 export default function QuestionsScreen() {
@@ -21,9 +21,13 @@ export default function QuestionsScreen() {
   
   return (
     <ThemedView style={styles.container}>
+      <Stack.Screen
+        options={{
+          headerShown: false,
+        }}
+      />
       <View style={styles.header}>
         <TouchableOpacity 
-          style={styles.backButton}
           onPress={() => router.back()}
         >
           <Ionicons name="arrow-back" size={scale(24)} color={Colors.grayscale.white} />
@@ -46,7 +50,6 @@ export default function QuestionsScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: Colors.primary.blue,
   },
   header: {
@@ -58,25 +61,26 @@ const styles = StyleSheet.create({
     paddingBottom: verticalScale(20),
     marginTop: verticalScale(10),
   },
-  backButton: {
-    padding: scale(8),
-  },
   title: {
-    fontSize: fontScale(24),
+    fontSize: fontScale(25),
     color: Colors.grayscale.white,
-    fontFamily: 'Poppins-Bold',
-    fontWeight: '700',
+    fontFamily: 'Manrope',
+    fontWeight: '600',
+    paddingVertical: verticalScale(10)
   },
   placeholder: {
     width: scale(40),
   },
   scrollView: {
-    flex: 1,
-  },
-  content: {
     backgroundColor: Colors.grayscale.white,
     borderTopLeftRadius: scale(30),
     borderTopRightRadius: scale(30),
+    paddingTop: verticalScale(30),
+    paddingBottom: verticalScale(60),
+    paddingHorizontal: scale(20),
+  },
+  content: {
+    backgroundColor: Colors.grayscale.white,
     paddingHorizontal: scale(20),
     paddingTop: verticalScale(30),
     paddingBottom: verticalScale(100),

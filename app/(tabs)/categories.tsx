@@ -237,8 +237,8 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   cardImage: {
-    width: '85%',
-    height: '85%',
+    width: '100%',
+    height: '100%',
     resizeMode: 'contain',
   },
 });

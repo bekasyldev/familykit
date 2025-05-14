@@ -4,7 +4,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { router, Stack } from 'expo-router';
 import { scale, verticalScale, fontScale, moderateScale, listenOrientationChange } from '@/constants/Layout';
 
 export default function OutdoorScreen() {
@@ -21,21 +21,16 @@ export default function OutdoorScreen() {
   return (
     <ThemedView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity 
-          style={styles.backButton}
-          onPress={() => router.back()}
-        >
-          <Ionicons name="arrow-back" size={scale(24)} color={Colors.grayscale.white} />
-        </TouchableOpacity>
-        <ThemedText style={styles.title}>На улице</ThemedText>
-        <View style={styles.placeholder} />
-      </View>
+              <TouchableOpacity onPress={() => router.back()}>
+                <Ionicons name="arrow-back" size={scale(24)} color={Colors.grayscale.white} />
+              </TouchableOpacity>
+              <ThemedText style={styles.title}>На улице</ThemedText>
+        </View>
+
       
       <ScrollView style={styles.scrollView}>
         <View style={styles.content}>
           <ThemedText style={styles.sectionTitle}>Популярные активности</ThemedText>
-          
-          
         </View>
       </ScrollView>
     </ThemedView>
@@ -49,26 +44,24 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: scale(20),
     paddingTop: verticalScale(70),
     paddingBottom: verticalScale(20),
-    marginTop: verticalScale(10),
-  },
-  backButton: {
-    padding: scale(8),
+    gap: scale(12),
   },
   title: {
-    fontSize: fontScale(24),
+    fontSize: fontScale(25),
     color: Colors.grayscale.white,
-    fontFamily: 'Poppins-Bold',
-    fontWeight: '700',
-  },
-  placeholder: {
-    width: scale(40),
+    fontFamily: 'Manrope',
+    fontWeight: '600',
+    paddingVertical: verticalScale(10)
   },
   scrollView: {
+    backgroundColor: Colors.grayscale.white,
+    height: '100%',
+    borderTopLeftRadius: scale(30),
+    borderTopRightRadius: scale(30),
     flex: 1,
   },
   content: {
