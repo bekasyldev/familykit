@@ -1,13 +1,23 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Image, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Image, TouchableOpacity, Dimensions } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { FilterModal } from '@/components/modals/FilterModal';
+import { scale, verticalScale, fontScale, moderateScale, listenOrientationChange } from '@/constants/Layout';
 
 export default function FavoritesScreen() {
   const [filterModalVisible, setFilterModalVisible] = useState(false);
+  const [dimensions, setDimensions] = useState(Dimensions.get('window'));
+  
+  useEffect(() => {
+    const subscription = listenOrientationChange(() => {
+      setDimensions(Dimensions.get('window'));
+    });
+    
+    return () => subscription.remove();
+  }, []);
   
   const toggleFilterModal = () => {
     setFilterModalVisible(!filterModalVisible);
@@ -18,7 +28,7 @@ export default function FavoritesScreen() {
       <View style={styles.header}>
         <ThemedText style={styles.title}>Избранное</ThemedText>
         <TouchableOpacity style={styles.filterButton} onPress={toggleFilterModal}>
-          <Ionicons name="options-outline" size={24} color={Colors.grayscale.white} />
+          <Ionicons name="options-outline" size={scale(24)} color={Colors.grayscale.white} />
         </TouchableOpacity>
       </View>
       
@@ -55,45 +65,45 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 70,
-    paddingBottom: 20,
-    marginTop: 10,
+    paddingHorizontal: scale(20),
+    paddingTop: verticalScale(70),
+    paddingBottom: verticalScale(20),
+    marginTop: verticalScale(10),
   },
   title: {
-    fontSize: 24,
+    fontSize: fontScale(24),
     color: Colors.grayscale.white,
     fontFamily: 'Manrope',
     fontWeight: '600',
-    paddingVertical: 10
+    paddingVertical: verticalScale(10)
   },
   filterButton: {
-    padding: 8,
+    padding: scale(8),
   },
   content: {
     flex: 1,
     backgroundColor: Colors.grayscale.white,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: scale(30),
+    borderTopRightRadius: scale(30),
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: scale(20),
   },
   image: {
-    width: 240,
-    height: 240,
-    marginBottom: 24,
+    width: scale(240),
+    height: scale(240),
+    marginBottom: verticalScale(24),
   },
   message: {
-    fontSize: 18,
+    fontSize: fontScale(18),
     color: Colors.primary.blue,
-    marginBottom: 12,
+    marginBottom: verticalScale(12),
     textAlign: 'center',
     fontWeight: '500',
     fontFamily: 'Manrope',
   },
   addToFavorites: {
-    fontSize: 16,
+    fontSize: fontScale(16),
     color: Colors.accent.orange,
     textAlign: 'center',
     fontFamily: 'Manrope',

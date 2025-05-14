@@ -1,19 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Modal, Dimensions } from 'react-native';
-import { Image } from 'expo-image';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { ActivityCard } from '@/components/cards/ActivityCard';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { FilterModal } from '@/components/modals/FilterModal';
-import { router } from 'expo-router';
+import { scale, verticalScale, fontScale, moderateScale, listenOrientationChange } from '@/constants/Layout';
 
 
 export default function HomeScreen() {
   const [activeTab, setActiveTab] = useState<'recommended' | 'new'>('recommended');
   const [isGridView, setIsGridView] = useState(true);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
+  const [dimensions, setDimensions] = useState(Dimensions.get('window'));
+  
+  // Handle orientation changes
+  useEffect(() => {
+    const subscription = listenOrientationChange(() => {
+      setDimensions(Dimensions.get('window'));
+    });
+    
+    return () => subscription.remove();
+  }, []);
   
   const toggleFilterModal = () => {
     setFilterModalVisible(!filterModalVisible);
@@ -25,7 +34,7 @@ export default function HomeScreen() {
         <View style={styles.headerContent}>
           <ThemedText style={styles.logo}>Family<ThemedText style={styles.subLogo}>Kite</ThemedText></ThemedText>
           <TouchableOpacity style={styles.menuButton} onPress={toggleFilterModal}>
-            <Ionicons name="options-outline" size={24} color={Colors.grayscale.white} />
+            <Ionicons name="options-outline" size={scale(24)} color={Colors.grayscale.white} />
           </TouchableOpacity>
         </View>
       </View>
@@ -76,7 +85,7 @@ export default function HomeScreen() {
               >
                 <Ionicons 
                   name="grid-outline" 
-                  size={20} 
+                  size={scale(20)} 
                   color={isGridView ? Colors.primary.blue : Colors.grayscale.gray} 
                 />
               </TouchableOpacity>
@@ -86,7 +95,7 @@ export default function HomeScreen() {
               >
                 <Ionicons 
                   name="menu-outline" 
-                  size={20} 
+                  size={scale(20)} 
                   color={!isGridView ? Colors.primary.blue : Colors.grayscale.gray} 
                 />
               </TouchableOpacity>
@@ -107,7 +116,7 @@ export default function HomeScreen() {
               title="Конструкторы лего"
               duration={20}
               imageUrl="your_image_url"
-              onPress={() => {}}  // This will be handled inside ActivityCard now
+              onPress={() => {}}
               onLike={() => {}}
               description="Собирание LEGO с детьми — это увлекательное и полезное занятие, которое развивает воображение, мелкую моторику и логическое мышление."
               isGridView={isGridView}
@@ -116,7 +125,7 @@ export default function HomeScreen() {
               title="Конструкторы лего"
               duration={20}
               imageUrl="your_image_url"
-              onPress={() => {}}  // This will be handled inside ActivityCard now
+              onPress={() => {}}
               onLike={() => {}}
               description="Собирание LEGO с детьми — это увлекательное и полезное занятие, которое развивает воображение, мелкую моторику и логическое мышление."
               isGridView={isGridView}
@@ -134,38 +143,39 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary.blue,
   },
   header: {
-    paddingTop: 80,
-    paddingBottom: 20,
+    paddingTop: verticalScale(70),
+    paddingBottom: verticalScale(15),
   },
   headerContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: scale(20),
   },
   logo: {
-    fontSize: 24,
+    fontSize: fontScale(24),
     color: Colors.grayscale.white,
     fontFamily: 'Poppins-Bold',
     fontWeight: '700',
-    paddingVertical: 10
+    paddingVertical: verticalScale(8)
   },
   subLogo: {
-    fontSize: 24,
+    fontSize: fontScale(24),
     color: Colors.grayscale.white,
     fontFamily: 'Poppins',
     fontWeight: '500',
   },
   menuButton: {
-    paddingBottom: 10,
+    paddingBottom: verticalScale(10),
+    padding: scale(5),
   },
   titleContainer: {
-    paddingHorizontal: 20,
-    marginBottom: 31,
+    paddingHorizontal: scale(20),
+    marginBottom: verticalScale(25),
   },
   title: {
-    fontSize: 25,
-    lineHeight: 35,
+    fontSize: fontScale(25),
+    lineHeight: fontScale(35),
     color: Colors.grayscale.white,
     fontFamily: 'Manrope',
     fontWeight: '500',
@@ -173,12 +183,12 @@ const styles = StyleSheet.create({
   mainContent: {
     flex: 1,
     backgroundColor: Colors.grayscale.white,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: scale(30),
+    borderTopRightRadius: scale(30),
   },
   tabSection: {
-    paddingHorizontal: 20,
-    paddingVertical: 20,
+    paddingHorizontal: scale(20),
+    paddingVertical: verticalScale(20),
   },
   tabContainer: {
     flexDirection: 'row',
@@ -187,19 +197,19 @@ const styles = StyleSheet.create({
   },
   tabs: {
     flexDirection: 'row',
-    gap: 8,
+    gap: scale(8),
   },
   tab: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 10,
+    paddingHorizontal: scale(14),
+    paddingVertical: verticalScale(8),
+    borderRadius: scale(10),
     backgroundColor: '#F4F3F3'
   },
   activeTab: {
     backgroundColor: Colors.accent.lightOrange,
   },
   tabText: {
-    fontSize: 14,
+    fontSize: fontScale(14),
     color: Colors.grayscale.gray,
     fontFamily: 'Manrope',
     fontWeight: '500',
@@ -210,12 +220,12 @@ const styles = StyleSheet.create({
   viewToggle: {
     flexDirection: 'row',
     backgroundColor: Colors.grayscale.lightGray1,
-    borderRadius: 8,
-    padding: 4,
+    borderRadius: scale(8),
+    padding: moderateScale(4),
   },
   toggleButton: {
-    padding: 8,
-    borderRadius: 4,
+    padding: moderateScale(8),
+    borderRadius: scale(4),
   },
   activeToggle: {
     backgroundColor: Colors.grayscale.white,
@@ -224,7 +234,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    padding: 12,
+    padding: moderateScale(12),
   },
   cardsContainer: {
     width: '100%',
@@ -247,86 +257,86 @@ const styles = StyleSheet.create({
   filterModal: {
     width: '88%',
     backgroundColor: Colors.grayscale.white,
-    borderRadius: 24,
-    paddingHorizontal: 40,
-    paddingTop: 30,
-    paddingBottom: 30,
-    marginTop: 80, 
+    borderRadius: scale(24),
+    paddingHorizontal: scale(40),
+    paddingTop: verticalScale(30),
+    paddingBottom: verticalScale(30),
+    marginTop: verticalScale(80), 
   },
   filterHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 30,
+    marginBottom: verticalScale(30),
   },
   filterTitle: {
-    fontSize: 25,
+    fontSize: fontScale(25),
     fontWeight: '500',
     fontFamily: 'Manrope-Medium',
-    marginTop: 20
+    marginTop: verticalScale(15)
   },
   closeButton: {
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
   },
   closeIcon: {
-    width: 20,
-    height: 20,
+    width: scale(20),
+    height: scale(20),
   },
   filterOption: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 15,
-    paddingHorizontal: 17,
+    paddingVertical: verticalScale(15),
+    paddingHorizontal: scale(17),
     backgroundColor: '#F5F5F5',
-    borderRadius: 15,
-    marginBottom: 12,
+    borderRadius: scale(15),
+    marginBottom: verticalScale(12),
   },
   filterOptionText: {
-    fontSize: 16,
+    fontSize: fontScale(16),
     opacity: 0.5,
     fontFamily: 'Manrope',
   },
   arrowBottom: {
-    width: 16,
-    height: 7.5,
+    width: scale(16),
+    height: scale(7.5),
   },
   applyButton: {
     backgroundColor: Colors.primary.blue,
-    borderRadius: 16,
-    paddingVertical: 16,
+    borderRadius: scale(16),
+    paddingVertical: verticalScale(16),
     alignItems: 'center',
-    marginTop: 20,
-    marginBottom: 12,
+    marginTop: verticalScale(20),
+    marginBottom: verticalScale(12),
   },
   applyButtonText: {
     color: Colors.grayscale.white,
-    fontSize: 16,
+    fontSize: fontScale(16),
     fontFamily: 'Manrope-SemiBold',
     fontWeight: '600',
   },
   resetButton: {
     backgroundColor: '#F5F5F5',
-    borderRadius: 16,
-    paddingVertical: 16,
+    borderRadius: scale(16),
+    paddingVertical: verticalScale(16),
     alignItems: 'center',
   },
   resetButtonText: {
     color: Colors.primary.blue,
-    fontSize: 16,
+    fontSize: fontScale(16),
     fontFamily: 'Manrope-SemiBold',
   },
   modalHeaderContainer: {
     backgroundColor: Colors.primary.blue,
   },
   titleContainerFaded: {
-    paddingHorizontal: 20,
-    marginBottom: 31,
+    paddingHorizontal: scale(20),
+    marginBottom: verticalScale(30),
     opacity: 0.5,
   },
   titleFaded: {
-    fontSize: 25,
-    lineHeight: 35,
+    fontSize: fontScale(25),
+    lineHeight: fontScale(35),
     color: Colors.grayscale.white,
     fontFamily: 'Manrope',
     fontWeight: '500',

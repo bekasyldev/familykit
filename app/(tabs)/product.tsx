@@ -1,14 +1,25 @@
-import React from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, Image, TouchableOpacity, ScrollView, Dimensions } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { useLocalSearchParams, router } from 'expo-router';
+import { scale, verticalScale, fontScale, moderateScale, listenOrientationChange } from '@/constants/Layout';
 
 export default function ProductScreen() {
   const params = useLocalSearchParams();
   const { title, description, duration, imageUrl } = params;
+  const [dimensions, setDimensions] = useState(Dimensions.get('window'));
+  
+  // Handle orientation changes
+  useEffect(() => {
+    const subscription = listenOrientationChange(() => {
+      setDimensions(Dimensions.get('window'));
+    });
+    
+    return () => subscription.remove();
+  }, []);
   
   // Default values if params are not provided
   const activityTitle = title as string || "Конструкторы лего";
@@ -20,7 +31,7 @@ export default function ProductScreen() {
     <ThemedView style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color={Colors.grayscale.white} />
+          <Ionicons name="arrow-back" size={scale(24)} color={Colors.grayscale.white} />
         </TouchableOpacity>
         <ThemedText style={styles.headerTitle}>Активность</ThemedText>
       </View>
@@ -28,7 +39,9 @@ export default function ProductScreen() {
       <ScrollView style={styles.content} contentContainerStyle={styles.contentContainer}>
         <Image 
           source={require('../../assets/images/image.png')} 
-          style={styles.mainImage}
+          style={[styles.mainImage, {
+            height: dimensions.width > 600 ? verticalScale(400) : verticalScale(500)
+          }]}
           resizeMode="cover"
         />
         
@@ -36,7 +49,7 @@ export default function ProductScreen() {
           <View style={styles.titleRow}>
             <ThemedText style={styles.title}>{activityTitle}</ThemedText>
             <TouchableOpacity style={styles.likeButton}>
-              <Ionicons name="heart-outline" size={24} color={Colors.primary.darkBlue} />
+              <Ionicons name="heart-outline" size={scale(24)} color={Colors.primary.darkBlue} />
             </TouchableOpacity>
           </View>
           
@@ -48,7 +61,7 @@ export default function ProductScreen() {
             <ThemedText style={styles.timeLabel}>Время активности</ThemedText>
             <View style={styles.timeValue}>
               <ThemedText style={styles.timeText}>{activityDuration} мин</ThemedText>
-              <Ionicons name="time-outline" size={18} color={Colors.primary.darkBlue} />
+              <Ionicons name="time-outline" size={scale(18)} color={Colors.primary.darkBlue} />
             </View>
           </View>
           
@@ -97,72 +110,71 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 60,
-    paddingBottom: 20,
+    paddingHorizontal: scale(20),
+    paddingTop: verticalScale(60),
+    paddingBottom: verticalScale(20),
   },
   backButton: {
-    padding: 8,
+    padding: scale(8),
   },
   headerTitle: {
-    fontSize: 22,
+    fontSize: fontScale(22),
     color: Colors.grayscale.white,
     fontFamily: 'Manrope',
     fontWeight: '600',
-    marginLeft: 8,
+    marginLeft: scale(8),
   },
   content: {
     flex: 1,
     backgroundColor: Colors.grayscale.white,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingHorizontal: 20,
+    borderTopLeftRadius: scale(30),
+    borderTopRightRadius: scale(30),
+    paddingHorizontal: scale(20),
   },
   contentContainer: {
-    paddingBottom: 40,
+    paddingBottom: verticalScale(40),
   },
   mainImage: {
     width: '100%',
-    marginTop: 20,
-    height: 500,
-    borderRadius: 30,
+    marginTop: verticalScale(20),
+    borderRadius: scale(30),
   },
   infoContainer: {
-    padding: 20,
+    padding: scale(20),
   },
   titleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: verticalScale(12),
   },
   title: {
-    fontSize: 24,
+    fontSize: fontScale(24),
     fontWeight: '600',
     color: Colors.primary.darkBlue,
     fontFamily: 'Manrope',
     flex: 1,
   },
   likeButton: {
-    padding: 8,
+    padding: scale(8),
   },
   description: {
-    fontSize: 16,
+    fontSize: fontScale(16),
     color: Colors.grayscale.black,
     fontFamily: 'Inter',
     fontWeight: '400',
     opacity: 0.4,
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
   },
   timeContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 12,
-    marginBottom: 20,
+    paddingVertical: verticalScale(12),
+    marginBottom: verticalScale(20),
   },
   timeLabel: {
-    fontSize: 20,
+    fontSize: fontScale(20),
     fontWeight: '500',
     color: Colors.primary.darkBlue,
     fontFamily: 'Manrope',
@@ -170,38 +182,39 @@ const styles = StyleSheet.create({
   timeValue: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: scale(8),
     backgroundColor: Colors.grayscale.lightGray3,
-    paddingVertical: 8,
-    paddingHorizontal: 12,
-    borderRadius: 8,
+    paddingVertical: verticalScale(8),
+    paddingHorizontal: scale(12),
+    borderRadius: scale(8),
   },
   timeText: {
-    fontSize: 18,
+    fontSize: fontScale(18),
     color: Colors.primary.darkBlue,
     fontFamily: 'Manrope',
   },
   instructionContainer: {
-    marginTop: 10,
+    marginTop: verticalScale(10),
   },
   instructionTitle: {
-    fontSize: 20,
+    fontSize: fontScale(20),
     fontWeight: '500',
     color: Colors.primary.darkBlue,
     fontFamily: 'Manrope',
-    marginBottom: 16,
+    marginBottom: verticalScale(16),
   },
   instructionStep: {
     flexDirection: 'row',
+    marginBottom: verticalScale(8),
   },
   stepNumber: {
-    fontSize: 16,
+    fontSize: fontScale(16),
     fontWeight: '500',
-    width: 20,
+    width: scale(20),
   },
   stepText: {
-    fontSize: 16,
-    lineHeight: 22,
+    fontSize: fontScale(16),
+    lineHeight: fontScale(22),
     color: Colors.grayscale.black,
     fontFamily: 'Inter',
     flex: 1,

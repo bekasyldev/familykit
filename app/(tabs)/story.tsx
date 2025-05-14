@@ -1,14 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Image, Dimensions } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-
-const { width } = Dimensions.get('window');
+import { scale, verticalScale, fontScale, listenOrientationChange } from '@/constants/Layout';
 
 export default function StoryScreen() {
+  const [dimensions, setDimensions] = useState(Dimensions.get('window'));
+  
+  useEffect(() => {
+    const subscription = listenOrientationChange(() => {
+      setDimensions(Dimensions.get('window'));
+    });
+    
+    return () => subscription.remove();
+  }, []);
+
   return (
     <ThemedView style={styles.container}>
       <View style={styles.header}>
@@ -16,7 +25,7 @@ export default function StoryScreen() {
           style={styles.backButton}
           onPress={() => router.back()}
         >
-          <Ionicons name="arrow-back" size={24} color={Colors.grayscale.white} />
+          <Ionicons name="arrow-back" size={scale(24)} color={Colors.grayscale.white} />
         </TouchableOpacity>
         <ThemedText style={styles.title}>Расскажи историю</ThemedText>
         <View style={styles.placeholder} />
@@ -25,9 +34,6 @@ export default function StoryScreen() {
       <ScrollView style={styles.scrollView}>
         <View style={styles.content}>
           <ThemedText style={styles.sectionTitle}>Популярные истории</ThemedText>
-          
-          {/* Story cards will go here */}
-          
         </View>
       </ScrollView>
     </ThemedView>
@@ -43,39 +49,39 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 70,
-    paddingBottom: 20,
-    marginTop: 10,
+    paddingHorizontal: scale(20),
+    paddingTop: verticalScale(70),
+    paddingBottom: verticalScale(20),
+    marginTop: verticalScale(10),
   },
   backButton: {
-    padding: 8,
+    padding: scale(8),
   },
   title: {
-    fontSize: 24,
+    fontSize: fontScale(24),
     color: Colors.grayscale.white,
     fontFamily: 'Poppins-Bold',
     fontWeight: '700',
   },
   placeholder: {
-    width: 40,
+    width: scale(40),
   },
   scrollView: {
     flex: 1,
   },
   content: {
     backgroundColor: Colors.grayscale.white,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingHorizontal: 20,
-    paddingTop: 30,
-    paddingBottom: 100,
+    borderTopLeftRadius: scale(30),
+    borderTopRightRadius: scale(30),
+    paddingHorizontal: scale(20),
+    paddingTop: verticalScale(30),
+    paddingBottom: verticalScale(100),
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: fontScale(18),
     fontWeight: '600',
     color: Colors.grayscale.black,
-    marginBottom: 16,
+    marginBottom: verticalScale(16),
     fontFamily: 'Manrope',
   },
-}); 
+});

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import { useLocalSearchParams, Stack } from 'expo-router';
 import { ThemedView } from '@/components/ThemedView';
@@ -7,13 +7,22 @@ import { ActivityCard } from '@/components/cards/ActivityCard';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { FilterModal } from '@/components/modals/FilterModal';
-
-const { width } = Dimensions.get('window');
+import { scale, verticalScale, fontScale, moderateScale, listenOrientationChange } from '@/constants/Layout';
 
 export default function CategoryDetailScreen() {
   const { id } = useLocalSearchParams();
   const [isGridView, setIsGridView] = useState(true);
   const [filterModalVisible, setFilterModalVisible] = useState(false);
+  const [dimensions, setDimensions] = useState(Dimensions.get('window'));
+  
+  // Handle orientation changes
+  useEffect(() => {
+    const subscription = listenOrientationChange(() => {
+      setDimensions(Dimensions.get('window'));
+    });
+    
+    return () => subscription.remove();
+  }, []);
   
   const toggleFilterModal = () => {
     setFilterModalVisible(!filterModalVisible);
@@ -30,7 +39,7 @@ export default function CategoryDetailScreen() {
         <View style={styles.headerContent}>
           <ThemedText style={styles.title}>Словесные игры</ThemedText>
           <TouchableOpacity style={styles.menuButton} onPress={toggleFilterModal}>
-            <Ionicons name="options-outline" size={24} color={Colors.grayscale.white} />
+            <Ionicons name="options-outline" size={scale(24)} color={Colors.grayscale.white} />
           </TouchableOpacity>
         </View>
       </View>
@@ -48,7 +57,7 @@ export default function CategoryDetailScreen() {
           >
             <Ionicons 
               name="grid-outline" 
-              size={20} 
+              size={scale(20)} 
               color={isGridView ? Colors.primary.blue : Colors.grayscale.gray} 
             />
           </TouchableOpacity>
@@ -58,7 +67,7 @@ export default function CategoryDetailScreen() {
           >
             <Ionicons 
               name="menu-outline" 
-              size={20} 
+              size={scale(20)} 
               color={!isGridView ? Colors.primary.blue : Colors.grayscale.gray} 
             />
           </TouchableOpacity>
@@ -104,42 +113,42 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary.blue,
   },
   header: {
-    paddingTop: 80,
-    paddingBottom: 20,
+    paddingTop: verticalScale(80),
+    paddingBottom: verticalScale(20),
   },
   headerContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: scale(20),
   },
   title: {
-    fontSize: 22,
+    fontSize: fontScale(22),
     color: Colors.grayscale.white,
     fontFamily: 'Manrope',
     fontWeight: '600',
-    paddingVertical: 10
+    paddingVertical: verticalScale(10)
   },
   menuButton: {
-    padding: 8,
+    padding: scale(8),
   },
   mainContent: {
     flex: 1,
     backgroundColor: Colors.grayscale.white,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: scale(30),
+    borderTopRightRadius: scale(30),
   },
   viewToggle: {
     flexDirection: 'row',
     backgroundColor: Colors.grayscale.lightGray1,
-    borderRadius: 8,
-    padding: 4,
-    margin: 20,
+    borderRadius: scale(8),
+    padding: scale(4),
+    margin: scale(20),
     alignSelf: 'flex-start',
   },
   toggleButton: {
-    padding: 8,
-    borderRadius: 4,
+    padding: scale(8),
+    borderRadius: scale(4),
   },
   activeToggle: {
     backgroundColor: Colors.grayscale.white,
@@ -148,7 +157,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   contentContainer: {
-    padding: 12,
+    padding: scale(12),
   },
   cardsContainer: {
     width: '100%',

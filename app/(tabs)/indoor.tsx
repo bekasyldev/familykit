@@ -1,13 +1,26 @@
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { StyleSheet, View, ScrollView, TouchableOpacity, Image, Dimensions, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router, Stack } from 'expo-router';
 import { Colors } from '@/constants/Colors';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
-
-const { width } = Dimensions.get('window');
+import { scale, verticalScale, fontScale, moderateScale, listenOrientationChange } from '@/constants/Layout';
+import { useState, useEffect } from 'react';
 
 export default function IndoorScreen() {
+  const { width } = useWindowDimensions();
+  const [cardSize, setCardSize] = useState((width - scale(64)) / 2);
+  
+  // Handle orientation changes
+  useEffect(() => {
+    const subscription = listenOrientationChange(() => {
+      const newWidth = Dimensions.get('window').width;
+      setCardSize((newWidth - scale(64)) / 2);
+    });
+    
+    return () => subscription.remove();
+  }, []);
+
   const items = [
     { title: 'Наука', icon: require('@/assets/images/science.png'), route: '/indoor/science' },
     { title: 'Игры', icon: require('@/assets/images/games.png'), route: '/indoor/games' },
@@ -25,7 +38,7 @@ export default function IndoorScreen() {
       />
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color={Colors.grayscale.white} />
+          <Ionicons name="arrow-back" size={scale(24)} color={Colors.grayscale.white} />
         </TouchableOpacity>
         <ThemedText style={styles.title}>В помещении</ThemedText>
       </View>
@@ -35,7 +48,7 @@ export default function IndoorScreen() {
           {items.map((item, index) => (
             <TouchableOpacity
               key={index}
-              style={styles.card}
+              style={[styles.card, { width: cardSize, height: cardSize }]}
               onPress={() => router.push(item.route as any)}
             >
               <Image source={item.icon} style={styles.icon} />
@@ -48,8 +61,6 @@ export default function IndoorScreen() {
   );
 }
 
-const CARD_SIZE = (width - 64) / 2;
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -58,25 +69,25 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingTop: 70,
-    paddingBottom: 20,
-    gap: 12,
+    paddingHorizontal: scale(20),
+    paddingTop: verticalScale(70),
+    paddingBottom: verticalScale(20),
+    gap: scale(12),
   },
   title: {
-    fontSize: 25,
+    fontSize: fontScale(25),
     color: Colors.grayscale.white,
     fontFamily: 'Manrope',
     fontWeight: '600',
-    paddingVertical: 10
+    paddingVertical: verticalScale(10)
   },
   scroll: {
     backgroundColor: Colors.grayscale.white,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingTop: 30,
-    paddingBottom: 60,
-    paddingHorizontal: 20,
+    borderTopLeftRadius: scale(30),
+    borderTopRightRadius: scale(30),
+    paddingTop: verticalScale(30),
+    paddingBottom: verticalScale(60),
+    paddingHorizontal: scale(20),
   },
   grid: {
     flexDirection: 'row',
@@ -84,26 +95,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   card: {
-    width: CARD_SIZE,
-    height: CARD_SIZE,
     backgroundColor: Colors.grayscale.white,
-    borderRadius: 17,
+    borderRadius: scale(17),
     borderWidth: 1,
     borderColor: Colors.grayscale.lightGray1,
-    marginBottom: 16,
+    marginBottom: verticalScale(16),
     alignItems: 'center',
     justifyContent: 'center',
-    padding: 10,
+    padding: scale(10),
   },
   icon: {
-    width: 48,
-    height: 48,
+    width: scale(48),
+    height: scale(48),
     resizeMode: 'contain',
   },
   cardText: {
-    fontSize: 16,
+    fontSize: fontScale(16),
     fontWeight: '500',
-    marginTop: 16,
+    marginTop: verticalScale(16),
     color: Colors.primary.darkBlue,
     fontFamily: 'Manrope',
     textAlign: 'center',

@@ -12,8 +12,7 @@ import { router } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { Colors } from '@/constants/Colors';
 import { Image } from 'expo-image';
-
-const { width } = Dimensions.get('window');
+import { scale, verticalScale, fontScale, moderateScale, listenOrientationChange } from '@/constants/Layout';
 
 const slides = [
   {
@@ -44,6 +43,17 @@ export default function OnboardingScreen() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const scrollViewRef = useRef<ScrollView>(null);
   const timerRef = useRef<NodeJS.Timeout>();
+  const [dimensions, setDimensions] = useState(Dimensions.get('window'));
+  const { width } = dimensions;
+
+  // Handle orientation changes
+  useEffect(() => {
+    const subscription = listenOrientationChange(() => {
+      setDimensions(Dimensions.get('window'));
+    });
+    
+    return () => subscription.remove();
+  }, []);
 
   const scrollToIndex = (index: number) => {
     scrollViewRef.current?.scrollTo({
@@ -65,7 +75,7 @@ export default function OnboardingScreen() {
         clearInterval(timerRef.current);
       }
     };
-  }, [currentIndex]);
+  }, [currentIndex, width]);
 
   const handleScroll = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
     const contentOffset = event.nativeEvent.contentOffset;
@@ -104,7 +114,7 @@ export default function OnboardingScreen() {
         style={styles.scrollView}
       >
         {slides.map((slide) => (
-          <View key={slide.id} style={styles.slide}>
+          <View key={slide.id} style={[styles.slide, { width }]}>
             <View style={styles.logoContainer}>
               <ThemedText style={styles.logoText}>Family<ThemedText style={styles.logoSpan}>Kite</ThemedText></ThemedText>
             </View>
@@ -119,7 +129,9 @@ export default function OnboardingScreen() {
                   <ThemedText style={styles.subDescription}>{slide.subDescription}</ThemedText>
                 )}
               </View>
-              <View style={styles.imageContainer}>
+              <View style={[styles.imageContainer, {
+                maxHeight: dimensions.height > 700 ? verticalScale(400) : verticalScale(300)
+              }]}>
                 <Image source={slide.image} style={styles.image} contentFit="contain" />
               </View>
             </View>
@@ -148,64 +160,63 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   slide: {
-    width,
     flex: 1,
   },
   logoContainer: {
-    paddingTop: 60, 
-    paddingHorizontal: 20,
-    marginTop: 20,
+    paddingTop: verticalScale(60), 
+    paddingHorizontal: scale(20),
+    marginTop: verticalScale(20),
   },
   logoText: {
-    fontSize: 24,
+    fontSize: fontScale(24),
     fontFamily: 'Poppins-Bold',
     color: Colors.grayscale.white,
-    paddingVertical: 20,
+    paddingVertical: verticalScale(20),
     textAlign: "center"
   },
   logoSpan: {
-    fontSize: 24,
+    fontSize: fontScale(24),
     fontFamily: 'Poppins',
     color: Colors.grayscale.white,
   },
   contentContainer: {
     flex: 1,
-    paddingHorizontal: 20,
-    marginTop: 40,
+    paddingHorizontal: scale(20),
+    marginTop: verticalScale(40),
   },
   textContainer: {
-    marginBottom: 40,
+    marginBottom: verticalScale(40),
   },
   title: {
-    fontSize: 30,
-    lineHeight: 38,
+    fontSize: fontScale(30),
+    lineHeight: fontScale(38),
     fontFamily: 'Manrope',
     color: Colors.grayscale.white,
-    fontWeight: 600,
-    marginBottom: 24,
+    fontWeight: '600',
+    marginBottom: verticalScale(24),
     textAlign: "center",
   },
   titleSpan: {
-    fontSize: 30,
+    fontSize: fontScale(30),
     fontFamily: 'Manrope',
     color: Colors.grayscale.white,
-    fontWeight: 400
+    fontWeight: '400'
   },
   description: {
-    fontSize: 16,
-    lineHeight: 24,
+    fontSize: fontScale(16),
+    lineHeight: fontScale(24),
     fontFamily: 'Manrope',
     color: Colors.grayscale.white,
-    fontWeight: 400,
-    marginBottom: 16,
+    fontWeight: '400',
+    marginBottom: verticalScale(16),
     textAlign: "center"
   },
   subDescription: {
-    fontSize: 16,
-    lineHeight: 24,
+    fontSize: fontScale(16),
+    lineHeight: fontScale(24),
     fontFamily: 'Manrope',
     color: Colors.grayscale.white,
-    fontWeight: 400,
+    fontWeight: '400',
     textAlign: "center"
   },
   imageContainer: {
@@ -218,33 +229,33 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   buttonContainer: {
-    padding: 40,
+    padding: scale(40),
     backgroundColor: Colors.grayscale.white,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    marginTop: 20
+    borderTopLeftRadius: scale(30),
+    borderTopRightRadius: scale(30),
+    marginTop: verticalScale(20)
   },
   signUpButton: {
     backgroundColor: Colors.accent.lightOrange,
-    borderRadius: 12,
-    paddingVertical: 16,
+    borderRadius: scale(12),
+    paddingVertical: verticalScale(16),
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: verticalScale(12),
   },
   signUpButtonText: {
     color: Colors.grayscale.white,
-    fontSize: 16,
+    fontSize: fontScale(16),
     fontFamily: 'Manrope-SemiBold',
   },
   signInButton: {
     backgroundColor: Colors.grayscale.lightGray2,
-    borderRadius: 12,
-    paddingVertical: 16,
+    borderRadius: scale(12),
+    paddingVertical: verticalScale(16),
     alignItems: 'center',
   },
   signInButtonText: {
     color: Colors.accent.orange,
-    fontSize: 16,
+    fontSize: fontScale(16),
     fontFamily: 'Manrope-SemiBold',
   },
-}); 
+});

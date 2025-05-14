@@ -1,16 +1,26 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform, Dimensions } from 'react-native';
 import { router, Stack } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Image } from 'expo-image';
 import { Colors } from '@/constants/Colors';
 import { AntDesign } from '@expo/vector-icons';
+import { scale, verticalScale, fontScale, listenOrientationChange } from '@/constants/Layout';
 
 export default function SignUpScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [dimensions, setDimensions] = useState(Dimensions.get('window'));
+  
+  useEffect(() => {
+    const subscription = listenOrientationChange(() => {
+      setDimensions(Dimensions.get('window'));
+    });
+    
+    return () => subscription.remove();
+  }, []);
 
   const handleSignUp = () => {
     // TODO: Implement sign up logic
@@ -87,14 +97,19 @@ export default function SignUpScreen() {
 
           <TouchableOpacity style={styles.socialButton} onPress={handleGoogleSignUp}>
             <ThemedText style={styles.socialButtonText}>Войти с Google</ThemedText>
-            <Image source={require('./../../assets/images/google.png')} style={{ width: 25, height: 25 }} />
+            <Image source={require('./../../assets/images/google.png')} style={{ width: scale(25), height: scale(25) }} />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.socialButton} onPress={handleAppleSignUp}>
             <ThemedText style={styles.socialButtonText}>Войти с Apple</ThemedText>
-            <AntDesign name="apple1" size={24} color="#000000" />
+            <AntDesign name="apple1" size={scale(24)} color="#000000" />
           </TouchableOpacity>
-
+          
+          <TouchableOpacity style={styles.switchAuthButton} onPress={handleSignIn}>
+            <ThemedText style={styles.switchAuthText}>
+              Уже есть аккаунт? Войти
+            </ThemedText>
+          </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
     </ThemedView>
@@ -107,63 +122,64 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary.blue,
   },
   header: {
-    paddingHorizontal: 20,
-    paddingTop: 60,
+    paddingHorizontal: scale(20),
+    paddingTop: verticalScale(60),
   },
   logoText: {
-    fontSize: 24,
+    fontSize: fontScale(24),
     fontFamily: 'Poppins-Bold',
     color: Colors.grayscale.white,
-    paddingVertical: 10,
+    paddingVertical: verticalScale(10),
     textAlign: "center"
   },
   logoSpan: {
-    fontSize: 24,
+    fontSize: fontScale(24),
     fontFamily: 'Poppins',
     color: Colors.grayscale.white,
   },
   content: {
     flex: 1,
     backgroundColor: Colors.grayscale.white,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: scale(30),
+    borderTopRightRadius: scale(30),
+    marginTop: verticalScale(10),
   },
   formContainer: {
-    padding: 42,
+    padding: scale(32),
   },
   title: {
-    fontSize: 25,
+    fontSize: fontScale(25),
     fontFamily: 'Manrope',
     color: Colors.grayscale.black,
-    fontWeight: 600,
-    marginBottom: 32,
-    paddingVertical: 10
+    fontWeight: '600',
+    marginBottom: verticalScale(32),
+    paddingVertical: verticalScale(10)
   },
   input: {
     backgroundColor: Colors.grayscale.lightGray1,
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 16,
-    fontSize: 16,
+    borderRadius: scale(12),
+    padding: scale(16),
+    marginBottom: verticalScale(16),
+    fontSize: fontScale(16),
     fontFamily: 'Manrope',
     color: Colors.grayscale.black,
   },
   signUpButton: {
     backgroundColor: Colors.accent.lightOrange,
-    borderRadius: 12,
-    padding: 16,
+    borderRadius: scale(12),
+    padding: scale(16),
     alignItems: 'center',
-    marginTop: 80,
+    marginTop: verticalScale(60),
   },
   signUpButtonText: {
     color: Colors.grayscale.white,
-    fontSize: 16,
+    fontSize: fontScale(16),
     fontFamily: 'Manrope-SemiBold',
   },
   dividerContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 24,
+    marginVertical: verticalScale(24),
   },
   divider: {
     flex: 1,
@@ -171,34 +187,34 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.grayscale.lightGray1,
   },
   dividerText: {
-    marginHorizontal: 16,
+    marginHorizontal: scale(16),
     color: Colors.grayscale.gray,
-    fontSize: 14,
+    fontSize: fontScale(14),
     fontFamily: 'Manrope',
   },
   socialButton: {
     flexDirection: 'row',
     backgroundColor: Colors.grayscale.lightGray1,
-    borderRadius: 12,
-    paddingHorizontal: 32,
-    paddingVertical: 16,
+    borderRadius: scale(12),
+    paddingHorizontal: scale(32),
+    paddingVertical: verticalScale(16),
     alignItems: 'center',
-    marginBottom: 16,
+    marginBottom: verticalScale(16),
     justifyContent: 'space-between',
   },
   socialButtonText: {
     color: Colors.grayscale.black,
-    fontSize: 16,
+    fontSize: fontScale(16),
     fontFamily: 'Manrope-SemiBold',
-    marginRight: 8,
+    marginRight: scale(8),
   },
   switchAuthButton: {
-    marginTop: 8,
+    marginTop: verticalScale(16),
     alignItems: 'center',
   },
   switchAuthText: {
     color: Colors.primary.blue,
-    fontSize: 14,
+    fontSize: fontScale(14),
     fontFamily: 'Manrope',
   },
-}); 
+});

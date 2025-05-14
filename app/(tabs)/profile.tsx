@@ -1,15 +1,25 @@
-import { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Switch, Modal } from 'react-native';
+import { useState, useEffect } from 'react';
+import { StyleSheet, View, TouchableOpacity, Switch, Modal, Dimensions } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { scale, verticalScale, fontScale, listenOrientationChange } from '@/constants/Layout';
 
 export default function ProfileScreen() {
   const router = useRouter();
   const [languageModalVisible, setLanguageModalVisible] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('Русский');
+  const [dimensions, setDimensions] = useState(Dimensions.get('window'));
+
+  useEffect(() => {
+    const subscription = listenOrientationChange(() => {
+      setDimensions(Dimensions.get('window'));
+    });
+    
+    return () => subscription.remove();
+  }, []);
 
   const handleLogout = () => {
     router.push('/(auth)/signup');
@@ -41,12 +51,12 @@ export default function ProfileScreen() {
         <ThemedText style={styles.sectionTitle}>
           Настройки приложения
         </ThemedText>
-        
+
         <TouchableOpacity style={styles.setting} onPress={openLanguageModal}>
           <ThemedText style={styles.settingText}>Язык</ThemedText>
           <View style={styles.settingValue}>
             <ThemedText style={styles.valueText}>{selectedLanguage}</ThemedText>
-            <MaterialIcons name="keyboard-arrow-down" size={24} color={Colors.primary.blue} />
+            <MaterialIcons name="keyboard-arrow-down" size={scale(24)} color={Colors.primary.blue} />
           </View>
         </TouchableOpacity>
 
@@ -68,14 +78,14 @@ export default function ProfileScreen() {
 
         <TouchableOpacity style={styles.setting} onPress={navigateToSupport}>
           <ThemedText style={styles.settingText}>Поддержка</ThemedText>
-          <MaterialIcons name="headset" size={24} color={Colors.primary.blue} />
+          <MaterialIcons name="headset" size={scale(24)} color={Colors.primary.blue} />
         </TouchableOpacity>
 
         <TouchableOpacity 
           style={styles.setting}
         >
           <ThemedText style={styles.settingText}>Оставить отзыв</ThemedText>
-          <MaterialIcons name="arrow-forward-ios" size={20} color={Colors.primary.blue} />
+          <MaterialIcons name="arrow-forward-ios" size={scale(20)} color={Colors.primary.blue} />
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.logoutButton}>
@@ -97,7 +107,7 @@ export default function ProfileScreen() {
             <View style={styles.languageHeader}>
               <ThemedText style={styles.languageTitle}>Выбор языка</ThemedText>
               <TouchableOpacity onPress={closeLanguageModal}>
-                <MaterialIcons name="close" size={24} color={Colors.primary.blue} />
+                <MaterialIcons name="close" size={scale(24)} color={Colors.primary.blue} />
               </TouchableOpacity>
             </View>
             
@@ -115,7 +125,7 @@ export default function ProfileScreen() {
                 Русский
               </ThemedText>
               {selectedLanguage === 'Русский' && (
-                <MaterialIcons name="check" size={24} color={Colors.accent.orange} />
+                <MaterialIcons name="check" size={scale(24)} color={Colors.accent.orange} />
               )}
             </TouchableOpacity>
             
@@ -133,7 +143,7 @@ export default function ProfileScreen() {
                 English
               </ThemedText>
               {selectedLanguage === 'English' && (
-                <MaterialIcons name="check" size={24} color={Colors.accent.orange} />
+                <MaterialIcons name="check" size={scale(24)} color={Colors.accent.orange} />
               )}
             </TouchableOpacity>
             
@@ -153,41 +163,41 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.primary.blue,
   },
   header: {
-    paddingHorizontal: 20,
-    paddingTop: 80,
-    paddingBottom: 20,
+    paddingHorizontal: scale(20),
+    paddingTop: verticalScale(80),
+    paddingBottom: verticalScale(20),
   },
   title: {
-    fontSize: 24,
+    fontSize: fontScale(24),
     color: Colors.grayscale.white,
     fontFamily: 'Manrope',
     fontWeight: '600',
-    paddingVertical: 10
+    paddingVertical: verticalScale(10)
   },
   content: {
     flex: 1,
     backgroundColor: Colors.grayscale.white,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    padding: 20,
+    borderTopLeftRadius: scale(30),
+    borderTopRightRadius: scale(30),
+    padding: scale(20),
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: fontScale(18),
     fontWeight: '600',
     color: Colors.grayscale.black,
-    marginBottom: 24,
-    marginTop: 10,
+    marginBottom: verticalScale(24),
+    marginTop: verticalScale(10),
   },
   setting: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 16,
+    paddingVertical: verticalScale(16),
     borderBottomWidth: 1,
     borderBottomColor: Colors.grayscale.lightGray1,
   },
   settingText: {
-    fontSize: 16,
+    fontSize: fontScale(16),
     color: Colors.primary.blue,
   },
   settingValue: {
@@ -195,28 +205,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   valueText: {
-    fontSize: 16,
+    fontSize: fontScale(16),
     color: Colors.grayscale.gray,
-    marginRight: 4,
+    marginRight: scale(4),
   },
   switchContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    gap: scale(8),
   },
   switchLabel: {
-    fontSize: 14,
+    fontSize: fontScale(14),
     color: Colors.grayscale.gray,
   },
   logoutButton: {
-    marginTop: 32,
-    paddingVertical: 16,
+    marginTop: verticalScale(32),
+    paddingVertical: verticalScale(16),
     alignItems: 'center',
     backgroundColor: Colors.grayscale.lightGray2,
-    borderRadius: 12,
+    borderRadius: scale(12),
   },
   logoutText: {
-    fontSize: 16,
+    fontSize: fontScale(16),
     color: Colors.accent.orange,
     fontWeight: '500',
   },
@@ -229,19 +239,19 @@ const styles = StyleSheet.create({
   languageModal: {
     width: '88%',
     backgroundColor: Colors.grayscale.white,
-    borderRadius: 24,
-    paddingHorizontal: 20,
-    paddingTop: 24,
-    paddingBottom: 24,
+    borderRadius: scale(24),
+    paddingHorizontal: scale(20),
+    paddingTop: verticalScale(24),
+    paddingBottom: verticalScale(24),
   },
   languageHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 24,
+    marginBottom: verticalScale(24),
   },
   languageTitle: {
-    fontSize: 20,
+    fontSize: fontScale(20),
     fontWeight: '600',
     color: Colors.grayscale.black,
     fontFamily: 'Manrope',
@@ -250,16 +260,16 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingVertical: 16,
-    paddingHorizontal: 16,
-    borderRadius: 12,
-    marginBottom: 12,
+    paddingVertical: verticalScale(16),
+    paddingHorizontal: scale(16),
+    borderRadius: scale(12),
+    marginBottom: verticalScale(12),
   },
   selectedLanguage: {
     backgroundColor: Colors.grayscale.lightGray2,
   },
   languageText: {
-    fontSize: 16,
+    fontSize: fontScale(16),
     color: Colors.grayscale.black,
     fontFamily: 'Manrope',
   },
@@ -269,14 +279,14 @@ const styles = StyleSheet.create({
   },
   confirmButton: {
     backgroundColor: Colors.primary.blue,
-    borderRadius: 16,
-    paddingVertical: 16,
+    borderRadius: scale(16),
+    paddingVertical: verticalScale(16),
     alignItems: 'center',
-    marginTop: 16,
+    marginTop: verticalScale(16),
   },
   confirmButtonText: {
     color: Colors.grayscale.white,
-    fontSize: 16,
+    fontSize: fontScale(16),
     fontFamily: 'Manrope-SemiBold',
     fontWeight: '600',
   },

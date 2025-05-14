@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, TextInput, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, View, TouchableOpacity, TextInput, ScrollView, KeyboardAvoidingView, Platform, Dimensions } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
+import { scale, verticalScale, fontScale, moderateScale, listenOrientationChange } from '@/constants/Layout';
 
 interface Message {
   id: number;
@@ -24,6 +25,16 @@ export default function SupportChatScreen() {
       timestamp: new Date() 
     },
   ]);
+  const [dimensions, setDimensions] = useState(Dimensions.get('window'));
+  
+  // Handle orientation changes
+  useEffect(() => {
+    const subscription = listenOrientationChange(() => {
+      setDimensions(Dimensions.get('window'));
+    });
+    
+    return () => subscription.remove();
+  }, []);
 
   const handleSend = () => {
     if (message.trim() === '') return;
@@ -65,10 +76,10 @@ export default function SupportChatScreen() {
       <View style={styles.header}>
         <View style={styles.headerContent}>
           <TouchableOpacity onPress={() => router.back()}>
-            <Ionicons name="arrow-back" size={24} color={Colors.grayscale.white} />
+            <Ionicons name="arrow-back" size={scale(24)} color={Colors.grayscale.white} />
           </TouchableOpacity>
           <ThemedText style={styles.title}>Поддержка</ThemedText>
-          <View style={{ width: 24 }} />
+          <View style={{ width: scale(24) }} />
         </View>
       </View>
 
@@ -118,7 +129,7 @@ export default function SupportChatScreen() {
             >
               <MaterialIcons 
                 name="send" 
-                size={24} 
+                size={scale(24)} 
                 color={message.trim() === '' ? Colors.grayscale.gray : Colors.grayscale.white} 
               />
             </TouchableOpacity>
@@ -138,17 +149,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    paddingTop: 60,
-    paddingBottom: 20,
+    paddingTop: verticalScale(60),
+    paddingBottom: verticalScale(20),
   },
   headerContent: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: scale(20),
   },
   title: {
-    fontSize: 18,
+    fontSize: fontScale(18),
     color: Colors.grayscale.white,
     fontFamily: 'Manrope',
     fontWeight: '600',
@@ -156,22 +167,22 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     backgroundColor: Colors.grayscale.white,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: scale(30),
+    borderTopRightRadius: scale(30),
     overflow: 'hidden',
   },
   messagesContainer: {
     flex: 1,
-    padding: 16,
+    padding: scale(16),
   },
   messagesContent: {
-    paddingBottom: 16,
+    paddingBottom: scale(16),
   },
   messageBubble: {
     maxWidth: '80%',
-    padding: 12,
-    borderRadius: 16,
-    marginBottom: 12,
+    padding: scale(12),
+    borderRadius: scale(16),
+    marginBottom: verticalScale(12),
   },
   userMessage: {
     backgroundColor: Colors.primary.blue,
@@ -184,41 +195,41 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 0,
   },
   messageText: {
-    fontSize: 16,
+    fontSize: fontScale(16),
     color: Colors.grayscale.white,
     fontFamily: 'Manrope',
   },
   timestamp: {
-    fontSize: 12,
+    fontSize: fontScale(12),
     color: 'rgba(255, 255, 255, 0.7)',
     alignSelf: 'flex-end',
-    marginTop: 4,
+    marginTop: verticalScale(4),
   },
   inputContainer: {
     flexDirection: 'row',
-    padding: 12,
+    padding: scale(12),
     borderTopWidth: 1,
     borderTopColor: Colors.grayscale.lightGray1,
     backgroundColor: Colors.grayscale.white,
     alignItems: 'center',
-    marginBottom: 20,
+    marginBottom: verticalScale(20),
   },
   input: {
     flex: 1,
     backgroundColor: Colors.grayscale.lightGray2,
-    borderRadius: 20,
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    marginRight: 12,
-    fontSize: 16,
-    maxHeight: 100,
+    borderRadius: scale(20),
+    paddingHorizontal: scale(16),
+    paddingVertical: verticalScale(10),
+    marginRight: scale(12),
+    fontSize: fontScale(16),
+    maxHeight: verticalScale(100),
     fontFamily: 'Manrope',
   },
   sendButton: {
     backgroundColor: Colors.primary.blue,
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: scale(44),
+    height: scale(44),
+    borderRadius: scale(22),
     justifyContent: 'center',
     alignItems: 'center',
   },

@@ -1,15 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, Image, View, Dimensions, Text } from 'react-native';
 import { Colors } from '@/constants/Colors';
+import { scale, verticalScale, fontScale, listenOrientationChange } from '@/constants/Layout';
 
-const { width } = Dimensions.get('window');
-
-// 🆕 Updated dimensions for taller cards
-const GRID_CARD_WIDTH = (width - 56) / 2 - 20;
-const GRID_CARD_HEIGHT = GRID_CARD_WIDTH + 80; // was +50
-const LIST_CARD_WIDTH = width;
-const LIST_CARD_HEIGHT = (LIST_CARD_WIDTH * 700) / 367; // was 607
-const LIST_IMAGE_HEIGHT = (LIST_CARD_WIDTH * 420) / 367; // was 353
+const calculateDimensions = () => {
+  const { width } = Dimensions.get('window');
+  const GRID_CARD_WIDTH = (width - scale(56)) / 2 - scale(20);
+  const GRID_CARD_HEIGHT = GRID_CARD_WIDTH + verticalScale(80);
+  const LIST_CARD_WIDTH = width;
+  const LIST_CARD_HEIGHT = (LIST_CARD_WIDTH * 700) / 367;
+  const LIST_IMAGE_HEIGHT = (LIST_CARD_WIDTH * 420) / 367;
+  
+  return {
+    GRID_CARD_WIDTH,
+    GRID_CARD_HEIGHT,
+    LIST_CARD_WIDTH,
+    LIST_CARD_HEIGHT,
+    LIST_IMAGE_HEIGHT
+  };
+};
 
 interface ActivityCardProps {
   duration: number;
@@ -22,17 +31,27 @@ export function FlagCard({
   onLike,
   duration = 15,
 }: ActivityCardProps) {
+  const [dimensions, setDimensions] = useState(calculateDimensions());
+  
+  useEffect(() => {
+    const subscription = listenOrientationChange(() => {
+      setDimensions(calculateDimensions());
+    });
+    
+    return () => subscription.remove();
+  }, []);
+  
   return (
     <TouchableOpacity 
       style={[
         styles.card,
-        styles.gridCard
+        { width: dimensions.GRID_CARD_WIDTH * 1.1, height: dimensions.GRID_CARD_HEIGHT }
       ]} 
       onPress={onPress}
     >
       <View style={[
         styles.imageContainer,
-        styles.gridImageContainer
+        { height: dimensions.GRID_CARD_WIDTH * 1.25 }
       ]}>
         <Image 
           source={require('@/assets/images/flag.png')} 
@@ -40,7 +59,6 @@ export function FlagCard({
           resizeMode="cover"
         />
         
-        {/* Time indicator */}
         <View style={styles.timeContainer}>
           <Text style={styles.timeText}>{duration} мин</Text>
           <Image 
@@ -50,7 +68,6 @@ export function FlagCard({
           />
         </View>
         
-        {/* Play button */}
         <View style={styles.playButtonContainer}>
           <Image 
             source={require('@/assets/images/icon-park-solid_play.png')} 
@@ -59,7 +76,6 @@ export function FlagCard({
           />
         </View>
       </View>
-      {/* Optional: Add title/description here if needed */}
     </TouchableOpacity>
   );
 }
@@ -67,50 +83,36 @@ export function FlagCard({
 const styles = StyleSheet.create({
   card: {
     backgroundColor: Colors.grayscale.white,
-    borderRadius: 15,
+    borderRadius: scale(15),
     overflow: 'hidden',
-    marginBottom: 16,
-  },
-  gridCard: {
-    width: GRID_CARD_WIDTH * 1.1,
-    height: GRID_CARD_HEIGHT, // 🆕 taller
-  },
-  listCard: {
-    width: LIST_CARD_WIDTH * 1.25,
-    height: LIST_CARD_HEIGHT, // 🆕 taller
+    marginBottom: verticalScale(16),
   },
   imageContainer: {
     position: 'relative',
     width: '100%',
   },
-  gridImageContainer: {
-    height: GRID_CARD_WIDTH * 1.25, // 🆕 was 0.75
-  },
-  listImageContainer: {
-    height: LIST_IMAGE_HEIGHT, // 🆕 taller image
-  },
   image: {
     width: '100%',
     height: '100%',
-    borderRadius: 15,
+    borderRadius: scale(15),
   },
   timeContainer: {
     position: 'absolute',
-    top: 10,
-    right: 10,
+    top: verticalScale(10),
+    right: scale(10),
     backgroundColor: 'rgba(247, 247, 247, 0.8)',
     backdropFilter: 'blur(6px)',
-    paddingVertical: 4,
-    paddingHorizontal: 10,
-    borderRadius: 12,
+    paddingVertical: verticalScale(4),
+    paddingHorizontal: scale(10),
+    borderRadius: scale(12),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 4,
+    gap: scale(4),
   },
   timeText: {
     fontFamily: 'Manrope',
-    fontSize: 12,
+    fontSize: fontScale(12),
     fontWeight: '500',
     color: Colors.accent.orange,
     opacity: 0.8,
@@ -119,53 +121,56 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: '50%',
     left: '50%',
-    transform: [{ translateX: -25 }, { translateY: -25 }],
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    transform: [
+      { translateX: -scale(25) }, 
+      { translateY: -scale(25) }
+    ],
+    width: scale(50),
+    height: scale(50),
+    borderRadius: scale(25),
     justifyContent: 'center',
     alignItems: 'center',
   },
   playButton: {
-    width: 30,
-    height: 30,
+    width: scale(30),
+    height: scale(30),
   },
   gridTimeContainer: {
-    bottom: 8,
-    left: 8,
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderRadius: 8,
+    bottom: verticalScale(8),
+    left: scale(8),
+    paddingVertical: verticalScale(4),
+    paddingHorizontal: scale(8),
+    borderRadius: scale(8),
   },
   listTimeContainer: {
-    top: 24,
-    right: 16,
-    paddingVertical: 7,
-    paddingHorizontal: 12,
-    gap: 6,
-    borderRadius: 11,
+    top: verticalScale(24),
+    right: scale(16),
+    paddingVertical: verticalScale(7),
+    paddingHorizontal: scale(12),
+    gap: scale(6),
+    borderRadius: scale(11),
   },
   gridTimeText: {
-    fontSize: 12,
-    marginRight: 4,
+    fontSize: fontScale(12),
+    marginRight: scale(4),
   },
   listTimeText: {
-    fontSize: 18,
+    fontSize: fontScale(18),
   },
   timeIcon: {
-    width: 12,
-    height: 12,
+    width: scale(12),
+    height: scale(12),
     opacity: 0.7,
   },
   likeButton: {
     position: 'absolute',
     backgroundColor: 'rgba(255, 255, 255, 0.9)',
-    borderRadius: 16,
-    padding: 6,
+    borderRadius: scale(16),
+    padding: scale(6),
   },
   gridLikeButton: {
-    top: 8,
-    right: 8,
+    top: verticalScale(8),
+    right: scale(8),
   },
   listLikeButton: {
     padding: 0,
@@ -174,17 +179,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   gridContentContainer: {
-    padding: 12, // 🆕 was 8
+    padding: scale(12),
     justifyContent: 'center',
   },
   listContentContainer: {
-    padding: 16,
+    padding: scale(16),
   },
   listTitleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 11,
+    marginBottom: verticalScale(11),
   },
   title: {
     fontFamily: 'Manrope',
@@ -192,18 +197,18 @@ const styles = StyleSheet.create({
     color: Colors.primary.blue,
   },
   gridTitle: {
-    fontSize: 14,
-    lineHeight: 19,
+    fontSize: fontScale(14),
+    lineHeight: fontScale(19),
   },
   listTitle: {
     flex: 1,
-    fontSize: 22,
-    marginRight: 16,
+    fontSize: fontScale(22),
+    marginRight: scale(16),
   },
   description: {
-    fontSize: 16,
+    fontSize: fontScale(16),
     fontFamily: 'Inter',
-    lineHeight: 19,
+    lineHeight: fontScale(19),
     color: Colors.grayscale.black,
     opacity: 0.4,
   },

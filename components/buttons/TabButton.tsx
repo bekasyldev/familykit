@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { ThemedText } from '../ThemedText';
 import { Colors } from '@/constants/Colors';
+import { scale, verticalScale, fontScale } from '@/constants/Layout';
 
 interface TabButtonProps {
   title: string;
@@ -24,17 +25,17 @@ export function TabButton({ title, isActive, onPress }: TabButtonProps) {
 
 const styles = StyleSheet.create({
   button: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 20,
-    marginRight: 10,
+    paddingHorizontal: scale(16),
+    paddingVertical: verticalScale(8),
+    borderRadius: scale(20),
+    marginRight: scale(10),
     backgroundColor: 'transparent',
   },
   activeButton: {
     backgroundColor: Colors.primary.blue,
   },
   text: {
-    fontSize: 16,
+    fontSize: fontScale(16),
     color: Colors.grayscale.lightGray1,
     opacity: 0.6,
   },
@@ -43,4 +44,4 @@ const styles = StyleSheet.create({
     opacity: 1,
     fontWeight: '600',
   },
-}); 
+});

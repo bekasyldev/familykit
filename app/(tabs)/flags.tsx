@@ -1,12 +1,25 @@
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, ScrollView, TouchableOpacity, Image, Dimensions, useWindowDimensions } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router, Stack } from 'expo-router';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { Colors } from '@/constants/Colors';
 import { FlagCard } from '@/components/cards/FlagCard';
+import { scale, verticalScale, fontScale, moderateScale, listenOrientationChange } from '@/constants/Layout';
+import { useState, useEffect } from 'react';
 
 export default function FlagsScreen() {
+  const [dimensions, setDimensions] = useState(Dimensions.get('window'));
+  
+  // Handle orientation changes
+  useEffect(() => {
+    const subscription = listenOrientationChange(() => {
+      setDimensions(Dimensions.get('window'));
+    });
+    
+    return () => subscription.remove();
+  }, []);
+  
   return (
     <ThemedView style={styles.container}>
       <Stack.Screen 
@@ -16,7 +29,7 @@ export default function FlagsScreen() {
       />
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color={Colors.primary.blue} />
+          <Ionicons name="arrow-back" size={scale(24)} color={Colors.primary.blue} />
         </TouchableOpacity>
         <ThemedText style={styles.title}>Угадай флаг</ThemedText>
       </View>
@@ -61,54 +74,54 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
-    paddingTop: 70,
-    paddingBottom: 20,
-    paddingHorizontal: 20,
+    gap: scale(12),
+    paddingTop: verticalScale(70),
+    paddingBottom: verticalScale(20),
+    paddingHorizontal: scale(20),
   },
   title: {
-    fontSize: 24,
+    fontSize: fontScale(24),
     fontWeight: '600',
     fontFamily: 'Manrope',
     color: Colors.primary.darkBlue,
   },
   scrollContent: {
-    paddingHorizontal: 20,
-    paddingBottom: 100,
+    paddingHorizontal: scale(20),
+    paddingBottom: verticalScale(100),
   },
   instructionsBox: {
     backgroundColor: Colors.primary.darkBlue,
-    borderRadius: 24,
-    padding: 30,
-    marginHorizontal: 20,
-    marginBottom: 32,
+    borderRadius: scale(24),
+    padding: scale(30),
+    marginHorizontal: scale(20),
+    marginBottom: verticalScale(32),
   },
   instructionsTitle: {
-    fontSize: 18,
+    fontSize: fontScale(18),
     fontWeight: '700',
     color: Colors.grayscale.white,
-    marginBottom: 10,
+    marginBottom: verticalScale(10),
     fontFamily: 'Manrope',
   },
   instruction: {
-    fontSize: 15,
+    fontSize: fontScale(15),
     color: Colors.grayscale.white,
     fontFamily: 'Manrope',
-    marginLeft: 10,
-    marginBottom: 8,
+    marginLeft: scale(10),
+    marginBottom: verticalScale(8),
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: fontScale(18),
     fontWeight: '600',
     color: Colors.grayscale.black,
-    marginBottom: 16,
+    marginBottom: verticalScale(16),
     fontFamily: 'Manrope',
   },
   content: {
     flex: 1,
   },
   contentContainer: {
-    padding: 12,
+    padding: scale(12),
   },
   cardsContainer: {
     width: '100%',

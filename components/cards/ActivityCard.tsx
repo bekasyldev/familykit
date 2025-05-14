@@ -1,18 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, Image, View, Dimensions } from 'react-native';
 import { ThemedText } from '../ThemedText';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { scale, verticalScale, fontScale, listenOrientationChange } from '@/constants/Layout';
 
-const { width } = Dimensions.get('window');
-// Grid view dimensions
-const GRID_CARD_WIDTH = (width - 56) / 1.9; // Two cards with margins
-const GRID_CARD_HEIGHT = GRID_CARD_WIDTH;
-// List view dimensions (from design)
-const LIST_CARD_WIDTH = width - 24;
-const LIST_CARD_HEIGHT = (LIST_CARD_WIDTH * 607) / 367;
-const LIST_IMAGE_HEIGHT = (LIST_CARD_WIDTH * 353) / 367;
+// These will be recalculated when orientation changes
+const calculateDimensions = () => {
+  const { width } = Dimensions.get('window');
+  const GRID_CARD_WIDTH = (width - scale(56)) / 1.9; // Two cards with margins
+  const GRID_CARD_HEIGHT = GRID_CARD_WIDTH;
+  const LIST_CARD_WIDTH = width - scale(24);
+  const LIST_CARD_HEIGHT = (LIST_CARD_WIDTH * 607) / 367;
+  const LIST_IMAGE_HEIGHT = (LIST_CARD_WIDTH * 353) / 367;
+  
+  return {
+    GRID_CARD_WIDTH,
+    GRID_CARD_HEIGHT,
+    LIST_CARD_WIDTH,
+    LIST_CARD_HEIGHT,
+    LIST_IMAGE_HEIGHT
+  };
+};
 
 interface ActivityCardProps {
   title: string;
@@ -33,6 +43,16 @@ export function ActivityCard({
   description,
   isGridView = true
 }: ActivityCardProps) {
+  const [dimensions, setDimensions] = useState(calculateDimensions());
+  
+  // Handle orientation changes
+  useEffect(() => {
+    const subscription = listenOrientationChange(() => {
+      setDimensions(calculateDimensions());
+    });
+    
+    return () => subscription.remove();
+  }, []);
   
   // Navigate to product page with activity data
   const handlePress = () => {
@@ -51,13 +71,17 @@ export function ActivityCard({
     <TouchableOpacity 
       style={[
         styles.card,
-        isGridView ? styles.gridCard : styles.listCard
+        isGridView ? 
+          [styles.gridCard, { width: dimensions.GRID_CARD_WIDTH, height: dimensions.GRID_CARD_HEIGHT * 1.25 }] : 
+          [styles.listCard, { width: dimensions.LIST_CARD_WIDTH, height: dimensions.LIST_CARD_HEIGHT }]
       ]} 
       onPress={handlePress}
     >
       <View style={[
         styles.imageContainer,
-        isGridView ? styles.gridImageContainer : styles.listImageContainer
+        isGridView ? 
+          [styles.gridImageContainer, { height: dimensions.GRID_CARD_WIDTH }] : 
+          [styles.listImageContainer, { height: dimensions.LIST_IMAGE_HEIGHT * 1.25 }]
       ]}>
         <Image 
           source={require('@/assets/images/image.png')} 
@@ -74,7 +98,7 @@ export function ActivityCard({
           ]}>{duration} мин</ThemedText>
           <Ionicons 
             name="time-outline" 
-            size={isGridView ? 12 : 14} 
+            size={isGridView ? scale(12) : scale(14)} 
             color={Colors.primary.darkBlue} 
             style={styles.timeIcon} 
           />
@@ -86,7 +110,7 @@ export function ActivityCard({
           >
             <Ionicons 
               name="heart-outline" 
-              size={18} 
+              size={scale(18)} 
               color={Colors.accent.orange}
             />
           </TouchableOpacity>
@@ -120,7 +144,7 @@ export function ActivityCard({
               >
                 <Ionicons 
                   name="heart-outline" 
-                  size={32} 
+                  size={scale(32)} 
                   color={Colors.primary.blue}
                 />
               </TouchableOpacity>
@@ -140,17 +164,15 @@ export function ActivityCard({
 const styles = StyleSheet.create({
   card: {
     backgroundColor: Colors.grayscale.white,
-    borderRadius: 15,
+    borderRadius: scale(15),
     overflow: 'hidden',
-    marginBottom: 16,
+    marginBottom: verticalScale(16),
   },
   gridCard: {
-    width: GRID_CARD_WIDTH,
-    height: GRID_CARD_HEIGHT * 1.25,
+    // Width and height applied dynamically
   },
   listCard: {
-    width: LIST_CARD_WIDTH,
-    height: LIST_CARD_HEIGHT, 
+    // Width and height applied dynamically
   },
   imageContainer: {
     position: 'relative',
@@ -160,18 +182,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
   },
   gridImageContainer: {
-    height: GRID_CARD_WIDTH ,
+    // Height applied dynamically
   },
   listImageContainer: {
-    height: LIST_IMAGE_HEIGHT * 1.25,
+    // Height applied dynamically
   },
   image: {
     width: '90%',
     height: '100%',
-    borderRadius: 15,
+    borderRadius: scale(15),
     position: 'absolute',
     top: 0,
-    // Remove left: 0 to allow centering
   },
   timeContainer: {
     position: 'absolute',
@@ -182,19 +203,19 @@ const styles = StyleSheet.create({
     backdropFilter: 'blur(6px)',
   },
   gridTimeContainer: {
-    bottom: 8,
-    left: 16,
-    paddingVertical: 4,
-    paddingHorizontal: 8,
-    borderRadius: 8,
+    bottom: verticalScale(8),
+    left: scale(16),
+    paddingVertical: verticalScale(4),
+    paddingHorizontal: scale(8),
+    borderRadius: scale(8),
   },
   listTimeContainer: {
-    top: 24,
-    right: 28,
-    paddingVertical: 7,
-    paddingHorizontal: 12,
-    gap: 6,
-    borderRadius: 11,
+    top: verticalScale(24),
+    right: scale(28),
+    paddingVertical: verticalScale(7),
+    paddingHorizontal: scale(12),
+    gap: scale(6),
+    borderRadius: scale(11),
   },
   timeText: {
     fontFamily: 'Manrope',
@@ -203,11 +224,11 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   gridTimeText: {
-    fontSize: 12,
-    marginRight: 4,
+    fontSize: fontScale(12),
+    marginRight: scale(4),
   },
   listTimeText: {
-    fontSize: 18,
+    fontSize: fontScale(18),
   },
   timeIcon: {
     opacity: 0.7,
@@ -215,12 +236,12 @@ const styles = StyleSheet.create({
   likeButton: {
     position: 'absolute',
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    borderRadius: 7,
-    padding: 6,
+    borderRadius: scale(7),
+    padding: scale(6),
   },
   gridLikeButton: {
-    top: 8,
-    right: 24,
+    top: verticalScale(8),
+    right: scale(24),
   },
   listLikeButton: {
     padding: 0,
@@ -229,38 +250,38 @@ const styles = StyleSheet.create({
     flex: 1, // Take remaining space
   },
   gridContentContainer: {
-    padding: 8,
+    padding: scale(8),
     justifyContent: 'center',
   },
   listContentContainer: {
-    padding: 16,
+    padding: scale(16),
   },
   listTitleContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 11,
+    marginBottom: verticalScale(11),
   },
   title: {
     fontFamily: 'Manrope',
     fontWeight: '600',
-    marginLeft: 10,
+    marginLeft: scale(10),
     color: Colors.primary.darkBlue,
   },
   gridTitle: {
-    fontSize: 14,
-    lineHeight: 19,
+    fontSize: fontScale(14),
+    lineHeight: fontScale(19),
   },
   listTitle: {
     flex: 1,
-    fontSize: 22,
-    marginRight: 16,
+    fontSize: fontScale(22),
+    marginRight: scale(16),
   },
   description: {
-    fontSize: 16,
+    fontSize: fontScale(16),
     fontFamily: 'Inter',
-    marginLeft: 10,
-    lineHeight: 19,
+    marginLeft: scale(10),
+    lineHeight: fontScale(19),
     color: Colors.grayscale.black,
     opacity: 0.4,
   },
