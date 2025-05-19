@@ -4,8 +4,8 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { Colors } from '@/constants/Colors';
 import { Ionicons } from '@expo/vector-icons';
-import { router, Stack } from 'expo-router';
-import { scale, verticalScale, fontScale, moderateScale, listenOrientationChange } from '@/constants/Layout';
+import { router } from 'expo-router';
+import { scale, verticalScale, fontScale, listenOrientationChange } from '@/constants/Layout';
 
 export default function OutdoorScreen() {
   const [dimensions, setDimensions] = useState(Dimensions.get('window'));

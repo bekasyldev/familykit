@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: scale(12),
-    paddingTop: verticalScale(70),
+    paddingTop: verticalScale(80),
     paddingBottom: verticalScale(20),
     paddingHorizontal: scale(20),
   },

@@ -155,6 +155,7 @@ const styles = StyleSheet.create({
     marginBottom: verticalScale(20),
   },
   filterTitle: {
+    paddingVertical: verticalScale(10),
     fontSize: fontScale(25),
     fontWeight: '500',
     fontFamily: 'Manrope-Medium',
