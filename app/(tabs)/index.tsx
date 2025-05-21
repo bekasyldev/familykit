@@ -115,7 +115,6 @@ export default function HomeScreen() {
             <ActivityCard 
               title="Конструкторы лего"
               duration={20}
-              imageUrl="your_image_url"
               onPress={() => {}}
               onLike={() => {}}
               description="Собирание LEGO с детьми — это увлекательное и полезное занятие, которое развивает воображение, мелкую моторику и логическое мышление."
@@ -124,7 +123,6 @@ export default function HomeScreen() {
             <ActivityCard 
               title="Конструкторы лего"
               duration={20}
-              imageUrl="your_image_url"
               onPress={() => {}}
               onLike={() => {}}
               description="Собирание LEGO с детьми — это увлекательное и полезное занятие, которое развивает воображение, мелкую моторику и логическое мышление."

@@ -97,6 +97,12 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
+        name="science"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
         name="product"
         options={{
           href: null,

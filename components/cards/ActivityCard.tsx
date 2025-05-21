@@ -27,7 +27,7 @@ const calculateDimensions = () => {
 interface ActivityCardProps {
   title: string;
   duration: number;
-  imageUrl: string;
+  imageUrl?: string;
   onPress: () => void;
   onLike?: () => void;
   description?: string;
@@ -44,6 +44,7 @@ export function ActivityCard({
   isGridView = true
 }: ActivityCardProps) {
   const [dimensions, setDimensions] = useState(calculateDimensions());
+  const image = imageUrl || require('@/assets/images/image.png');
   
   // Handle orientation changes
   useEffect(() => {
@@ -84,7 +85,7 @@ export function ActivityCard({
           [styles.listImageContainer, { height: dimensions.LIST_IMAGE_HEIGHT * 1.25 }]
       ]}>
         <Image 
-          source={require('@/assets/images/image.png')} 
+          source={image} 
           style={styles.image}
           resizeMode="cover"
         />

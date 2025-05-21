@@ -22,7 +22,7 @@ export default function IndoorScreen() {
   }, []);
 
   const items = [
-    { title: 'Наука', icon: require('@/assets/images/science.png'), route: '/indoor/science' },
+    { title: 'Наука', icon: require('@/assets/images/science.png'), route: '/(tabs)/science' },
     { title: 'Игры', icon: require('@/assets/images/games.png'), route: '/indoor/games' },
     { title: 'Творчество', icon: require('@/assets/images/creativity.png'), route: '/indoor/creativity' },
     { title: 'Готовка', icon: require('@/assets/images/cooking.png'), route: '/indoor/cooking' },
